@@ -1,0 +1,20 @@
+{
+    "name": "Standard Modul für Modified",
+    "archiveName": "robinthehood/modified-std-module",
+    "sourceDir": "new_files",
+    "version": "0.0.1",
+
+    "shortDescription": "Standard Modul für Modified",
+    "description": "Standard Modul für Modified",
+
+    "developer": "Robin Wieschendorf",
+    "developerWebsite": "https://www.sumw.de",
+    "website": "https://www.sumw.de",
+
+    "modifiedCompatibility": [
+        "2.0.3.0",
+        "2.0.4.0",
+        "2.0.4.1",
+        "2.0.4.2"
+    ]
+}
