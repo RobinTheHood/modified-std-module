@@ -14,7 +14,57 @@ We would be happy if you would like to take part in the development of this modu
 
 
 ## Usage
-*Write here usage of class ModifiedStdModule ...*
+This is a example of how to use the StdModule class vor a System Module.
+
+`admin/includes/modules/system/mc_my_first_module.php`
+
+```php
+defined('_VALID_XTC') or die('Direct Access to this location is not allowed.');
+
+use RobinTheHood\ModifiedStdModule\Classes\StdModule;
+require_once DIR_FS_DOCUMENT_ROOT . '/vendor-no-composer/autoload.php';
+
+class mc_my_first_module extends StdModule
+{
+    public function __construct()
+    {
+        $this->init('MODULE_MC_MY_FIRST_MODULE');
+    }
+
+    public function display()
+    {
+        return $this->displaySaveButton();
+    }
+
+    public function install()
+    {
+        parent::install();
+    }
+
+    public function remove()
+    {
+        parent::remove();
+    }
+}
+```
+
+If you want add access to a file you can use `$this->setAdminAccess()` oder `$this->deleteAdminAccess()`
+
+```php
+...
+public function install()
+{
+    parent::install();
+    $this->setAdminAccess('mc_my_first_module');
+}
+...
+public function remove()
+{
+    parent::remove();
+    $this->deleteAdminAccess('mc_my_first_module');
+}
+...
+```
 
 In order to use configuration values you can use them as usual:
 
