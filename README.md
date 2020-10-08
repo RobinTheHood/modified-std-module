@@ -12,10 +12,6 @@ With this library you need less code to write system and class extensions for mo
 ## Authors
 - 2020 by Robin Wieschendorf
 
-## Contributing
-We would be happy if you would like to take part in the development of this module. If you wish more features or you want to make improvements or to fix errors feel free to contribute. In order to contribute, you just have to fork this repository and make pull requests.
-
-
 ## Usage
 
 ### Class: StdModule
@@ -91,3 +87,16 @@ echo $config->myConfigurationValue1;
 echo $config->myConfigurationValue2;
 echo $config->myConfigurationValue3;
 ```
+
+## Contributing
+We would be happy if you would like to take part in the development of this module. If you wish more features or you want to make improvements or to fix errors feel free to contribute. In order to contribute, you just have to fork this repository and make pull requests.
+
+### Coding Style
+We are using:
+- [PSR-1: Basic Coding Standard](https://www.php-fig.org/psr/psr-1/)
+- [PSR-12: Extended Coding Style](https://www.php-fig.org/psr/psr-12/)
+
+### Version and Commit-Messages
+We are using:
+- [Semantic Versioning 2.0.0](https://semver.org)
+- [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
