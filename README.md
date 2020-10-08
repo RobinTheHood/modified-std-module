@@ -1,5 +1,7 @@
 # Library Module: Modified Standard Module
-(DE): Programmcodeerweiterung: Standard Module für Modified 
+(DE): Programmcodeerweiterung: Standard Modul für Modified 
+
+With this library you need less code to write system and class extensions for modified.
 
 ## Requirements
 PHP 7.0 or above
