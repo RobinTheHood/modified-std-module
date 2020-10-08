@@ -1,10 +1,13 @@
 # Library Module: Modified Standard Module
+[![dicord](https://img.shields.io/discord/727190419158597683)](https://discord.gg/9NqwJqP)
+
 (DE): Programmcodeerweiterung: Standard Modul für Modified 
 
-With this library you need less code to write system and class extensions for modified.
+With this library you need less code to write system and class extensions for modified. If you need help visit the [Discord Server](https://discord.gg/9NqwJqP) for MMLC.
 
 ## Requirements
-PHP 7.0 or above
+- PHP 7.0 or above
+- [MMLC](https://module-loader.de) *(recommended)*
 
 ## Authors
 - 2020 by Robin Wieschendorf
