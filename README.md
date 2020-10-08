@@ -10,10 +10,12 @@ PHP 7.0 or above
 - 2020 by Robin Wieschendorf
 
 ## Contributing
-We would be happy if you would like to take part in the development of this module. If you wish more features or you want to make improvements or to fix errors feel free to contribute. In order to contribute, you just have to fork this repository and make pull requests or become a member of the github organisation [ModifiedCommunityModules](https://github.com/ModifiedCommunityModules) to get direct access to the repository.
+We would be happy if you would like to take part in the development of this module. If you wish more features or you want to make improvements or to fix errors feel free to contribute. In order to contribute, you just have to fork this repository and make pull requests.
 
 
 ## Usage
+
+### Class: StdModule
 This is a example of how to use the StdModule class vor a System Module.
 
 `admin/includes/modules/system/mc_my_first_module.php`
@@ -66,6 +68,7 @@ public function remove()
 ...
 ```
 
+### Class: Configuration
 In order to use configuration values you can use them as usual:
 
 ```php
