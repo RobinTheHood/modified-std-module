@@ -47,11 +47,9 @@ class StdModule
 
     public function getSortOrder()
     {
-        $sortOrder = $this->getConfig('SORT_ORDER');
-        if ($sortOrder) {
-            return $sortOrder;
-        }
-        return 0;
+        $sortOrder = defined($this->getConfig('SORT_ORDER')) ? $this->getConfig('SORT_ORDER') : 0;
+        
+        return $sortOrder;
     }
 
     public function getEnabled()
