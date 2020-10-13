@@ -47,11 +47,9 @@ class StdModule
 
     public function getSortOrder()
     {
-        $sortOrder = $this->getConfig('SORT_ORDER');
-        if ($sortOrder) {
-            return $sortOrder;
-        }
-        return 0;
+        $sortOrder = $this->getConfig('SORT_ORDER', 0);
+         
+        return $sortOrder;
     }
 
     public function getEnabled()
@@ -68,9 +66,11 @@ class StdModule
         return $this->modulePrefix;
     }
 
-    public function getConfig($name)
+    public function getConfig($name, $default = '')
     {
-        return constant($this->getModulePrefix() . '_' . $name);
+        $constantName = $this->getModulePrefix() . '_' . $name;
+
+        return defined($constantName) ? constant($constantName) : $default;
     }
 
     public function process($file)
