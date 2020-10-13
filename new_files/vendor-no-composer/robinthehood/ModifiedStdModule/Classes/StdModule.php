@@ -47,8 +47,8 @@ class StdModule
 
     public function getSortOrder()
     {
-        $sortOrder = defined($this->getConfig('SORT_ORDER')) ? $this->getConfig('SORT_ORDER') : 0;
-        
+        $sortOrder = $this->getConfig('SORT_ORDER', 0);
+         
         return $sortOrder;
     }
 
@@ -66,9 +66,11 @@ class StdModule
         return $this->modulePrefix;
     }
 
-    public function getConfig($name)
+    public function getConfig($name, $default = '')
     {
-        return constant($this->getModulePrefix() . '_' . $name);
+        $constantName = $this->getModulePrefix() . '_' . $name;
+
+        return defined($constantName) ? constant($constantName) : $default;
     }
 
     public function process($file)
