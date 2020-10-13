@@ -14,6 +14,15 @@ class Configuration
         $this->defineVariablesFromContants($constants, $prefix);
     }
 
+    public function __get($key)
+    {
+        if (isset($this->$key)) {
+            return $this->$key;
+        }
+
+        throw new RuntimeException("Unknown configuration variable " + $key);
+    }
+
     private function filterConstants($prefix)
     {
         $result = [];
