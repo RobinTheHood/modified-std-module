@@ -20,7 +20,7 @@ class Configuration
             return $this->$key;
         }
 
-        throw new RuntimeException("Unknown configuration variable " + $key);
+        throw new \RuntimeException("Unknown configuration variable " . $key);
     }
 
     private function filterConstants($prefix)
