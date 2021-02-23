@@ -1,4 +1,5 @@
 <?php
+
 namespace RobinTheHood\ModifiedStdModule\Classes;
 
 class Configuration
