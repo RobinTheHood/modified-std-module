@@ -126,19 +126,39 @@ class StdModule
         $this->addConfiguration($key, $value, $groupId, $sortOrder, 'textArea');
     }
 
-    public function addConfiguration($key, $value, $groupId, $sortOrder, $function = '')
+    public function addConfigurationOrderStatus($key, $value, $groupId, $sortOrder)
+    {
+        $this->addConfiguration($key, $value, $groupId, $sortOrder, 'orderStatus', 'xtc_get_order_status_name');
+    }
+
+    public function addCofigurationDropDown($key, $value, $groupId, $sortOrder, $values)
+    {
+        $arrayAsString = "['" . implode("','", $values) .  "']";
+        $setFunction = 'xtc_cfg_select_option(' . $arrayAsString . ',';
+        $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
+    }
+
+    public function addCofigurationDropDownByStaticFunction($key, $value, $groupId, $sortOrder, $staticCallFunctionName)
+    {
+        $setFunction = 'xtc_cfg_select_option(' . get_class($this) . '::' . $staticCallFunctionName . '(),';
+        $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
+    }
+
+    public function addConfiguration($key, $value, $groupId, $sortOrder, $setFunction = '', $useFunction = '')
     {
         $key = $this->getModulePrefix() . '_' . $key;
 
-        if ($function == 'select') {
-            $function = "xtc_cfg_select_option(array('true', 'false'),";
-        } elseif ($function == 'textArea') {
-            $function = "xtc_cfg_textarea(";
+        if ($setFunction == 'select') {
+            $setFunction = "xtc_cfg_select_option(array('true', 'false'),";
+        } elseif ($setFunction == 'textArea') {
+            $setFunction = "xtc_cfg_textarea(";
+        } elseif ($setFunction == 'orderStatus') {
+            $setFunction = "xtc_cfg_pull_down_order_statuses(";
         }
 
-        $function = str_replace("'", "\\'", $function);
+        $setFunction = str_replace("'", "\\'", $setFunction);
 
-        xtc_db_query("INSERT INTO `" . TABLE_CONFIGURATION . "` (`configuration_key`, `configuration_value`, `configuration_group_id`, `sort_order`, `set_function`, `date_added`) VALUES ('$key', '$value', '$groupId', '$sortOrder', '$function', now())");
+        xtc_db_query("INSERT INTO `" . TABLE_CONFIGURATION . "` (`configuration_key`, `configuration_value`, `configuration_group_id`, `sort_order`, `set_function`, `use_function`, `date_added`) VALUES ('$key', '$value', '$groupId', '$sortOrder', '$setFunction', '$useFunction', NOW())");
     }
 
     public function deleteConfiguration($key)
