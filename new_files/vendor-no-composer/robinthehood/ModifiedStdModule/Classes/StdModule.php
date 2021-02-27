@@ -4,6 +4,7 @@ namespace RobinTheHood\ModifiedStdModule\Classes;
 
 class StdModule
 {
+    public const VERSION = '';
     public $code;
     public $title;
     public $description;
@@ -13,6 +14,7 @@ class StdModule
     public $modulePrefix;
     public $keys;
 
+    private $tempVersion;
     public function init($modulePrefix, $code = '')
     {
         $this->modulePrefix = $modulePrefix;
@@ -72,6 +74,24 @@ class StdModule
         $constantName = $this->getModulePrefix() . '_' . $name;
 
         return defined($constantName) ? constant($constantName) : $default;
+    }
+
+    public function getVersion()
+    {
+        if (!$this->tempVersion) {
+            // Speichere Version in tempVersion, da Änderungen an der Datenbank Konstante
+            // VERSION erst bei einem reload aktiv werden. setVersion speicher ebenfalls
+            // einen neuen Wert in tempVersion.
+            $this->tempVersion = $this->getConfig('VERSION');
+        }
+        return $this->tempVersion;
+    }
+
+    public function setVersion($version)
+    {
+        $this->tempVersion = $version;
+        $this->deleteConfiguration('VERSION', $version);
+        $this->addConfiguration('VERSION', $version, 6, 1);
     }
 
     public function process($file)
