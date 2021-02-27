@@ -160,6 +160,12 @@ class StdModule
     public function install()
     {
         $this->addConfigurationSelect('STATUS', 'true', 6, 1);
+
+        $installedVersion = $this->getVersion();
+    
+        if (static::VERSION && !$installedVersion) {
+            $this->setVersion(static::VERSION);
+        }
     }
 
     public function remove()
