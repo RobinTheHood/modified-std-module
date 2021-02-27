@@ -7,6 +7,10 @@ $rthModifiedStdModuleMessages = [];
 class StdModule
 {
     public const VERSION = '';
+    public const UPDATE_ERROR = -1;
+    public const UPDATE_NOTHING = -1;
+    public const UPDATE_SUCCESS = 1;
+
     public const MESSAGE_ERROR = -1;
     public const MESSAGE_SUCCESS = 1;
 
@@ -264,6 +268,34 @@ class StdModule
             );
         }
     }
+
+    public function invokeUpdate()
+    {
+        $status = '';
+        while ($status != self::UPDATE_NOTHING) {
+            $versionBefore = $this->getVersion();
+            $status = $this->updateSteps();
+            $versionAfter = $this->getVersion();
+
+            if ($versionBefore == $versionAfter) {
+                break;
+            }
+        }
+
+        $this->title = $this->getTitle();
+
+        $this->addMessage(
+            'Update von ' . $this->getConfig('TITLE') .
+            ' auf Version ' . $this->getVersion() . ' erfolgreich.',
+            self::MESSAGE_SUCCESS
+        );
+    }
+
+    protected function updateSteps()
+    {
+        return self::UPDATE_NOTHING;
+    }
+
     public function addAction($functionName, $buttonName = '')
     {
         $buttonName = $buttonName ?? $functionName;
