@@ -20,6 +20,8 @@ class StdModule
     public $keys;
 
     private $tempVersion;
+    private $actions = [];
+
     public function init($modulePrefix, $code = '')
     {
         $this->modulePrefix = $modulePrefix;
@@ -227,5 +229,38 @@ class StdModule
     public function deleteAdminAccess($key)
     {
         xtc_db_query("ALTER TABLE " . TABLE_ADMIN_ACCESS . " DROP $key");
+    }
+    public function addAction($functionName, $buttonName = '')
+    {
+        $buttonName = $buttonName ?? $functionName;
+
+        $this->actions[] = [
+            'functionName' => $functionName,
+            'buttonName' => $buttonName
+        ];
+
+        $buttons = '';
+        foreach ($this->actions as $action) {
+            $buttons .= $this->renderButton($action['functionName'], $action['buttonName']);
+        }
+
+        $this->description = $buttons . $this->getDescription();
+
+        if ($_GET['moduleaction'] == $functionName) {
+            $functionName = 'invoke' . ucfirst($functionName);
+            $this->$functionName();
+        }
+    }
+
+    private function renderButton($functionName, $buttonName)
+    {
+        $url = xtc_href_link(
+            FILENAME_MODULE_EXPORT,
+            'set=system&module=' . $this->code . '&moduleaction=' . $functionName
+        );
+
+        return '
+            <a class="button btnbox" style="text-align:center;" onclick="this.blur();" href="' . $url . '">' . $buttonName . '</a>
+        ';
     }
 }
