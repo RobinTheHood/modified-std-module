@@ -71,7 +71,12 @@ class StdModule
 
     public function getTitle()
     {
-        return $this->getConfig('TITLE');
+        $version = $this->getVersion();
+        $title = $this->getConfig('TITLE');
+        if ($version) {
+            return $title . ' (' . $version . ')';
+        }
+        return $title;
     }
 
     public function getDescription()
