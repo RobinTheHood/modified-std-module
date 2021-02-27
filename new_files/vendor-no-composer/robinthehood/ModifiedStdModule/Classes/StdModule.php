@@ -2,9 +2,14 @@
 
 namespace RobinTheHood\ModifiedStdModule\Classes;
 
+$rthModifiedStdModuleMessages = [];
+
 class StdModule
 {
     public const VERSION = '';
+    public const MESSAGE_ERROR = -1;
+    public const MESSAGE_SUCCESS = 1;
+
     public $code;
     public $title;
     public $description;
@@ -31,6 +36,30 @@ class StdModule
         $this->enabled = $this->getEnabled();
 
         $this->addKey('STATUS');
+    }
+
+    public function addMessage($message, $messageType = self::MESSAGE_ERROR)
+    {
+        global $rthModifiedStdModuleMessages;
+
+        $hash = md5($message);
+
+        if (!$rthModifiedStdModuleMessages) {
+            echo '<br>';
+        }
+
+        if ($messageType == self::MESSAGE_ERROR) {
+            $class = 'error_message';
+        } elseif ($messageType == self::MESSAGE_SUCCESS) {
+            $class = 'success_message';
+        } else {
+            $class = 'error_message';
+        }
+
+        if (!$rthModifiedStdModuleMessages[$hash]) {
+            echo '<div class="' . $class . '">' . $message . '</div>';
+            $rthModifiedStdModuleMessages[$hash][$hash] = $message;
+        }
     }
 
     public function addKey($key)
