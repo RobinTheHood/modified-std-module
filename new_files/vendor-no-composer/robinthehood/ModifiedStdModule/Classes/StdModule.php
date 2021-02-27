@@ -219,6 +219,14 @@ class StdModule
         xtc_db_query("DELETE FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = '$key'");
     }
 
+    public function renameConfiguration($oldKey, $newKey)
+    {
+        $oldKey = $this->getModulePrefix() . '_' . $oldKey;
+        $newKey = $this->getModulePrefix() . '_' . $newKey;
+
+        xtc_db_query("UPDATE `" . TABLE_CONFIGURATION . "` SET `configuration_key` = '$newKey' WHERE `configuration_key` = '$oldKey'");
+    }
+
     public function setAdminAccess($key)
     {
         xtc_db_query("ALTER TABLE `" . TABLE_ADMIN_ACCESS . "` ADD `$key` INT(1) NOT NULL DEFAULT 0");
