@@ -249,6 +249,21 @@ class StdModule
     {
         xtc_db_query("ALTER TABLE " . TABLE_ADMIN_ACCESS . " DROP $key");
     }
+
+    public function checkForUpdate()
+    {
+        if ($this->getVersion()) {
+            $from = ' von ' . $this->getVersion();
+        }
+
+        if (static::VERSION && static::VERSION != $this->getVersion()) {
+            $this->addMessage(
+                $this->getConfig('TITLE') .
+                ' benötigt ein Update ' . $from . ' auf ' .
+                static::VERSION . ' - Klicken Sie dafür beim Modul auf Update.'
+            );
+        }
+    }
     public function addAction($functionName, $buttonName = '')
     {
         $buttonName = $buttonName ?? $functionName;
