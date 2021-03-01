@@ -312,7 +312,7 @@ class StdModule
 
         $this->description = $buttons . $this->getDescription();
 
-        if ($_GET['moduleaction'] == $functionName) {
+        if ($_GET['moduleaction'] == $functionName && $_GET['module'] == $this->code) {
             $functionName = 'invoke' . ucfirst($functionName);
             $this->$functionName();
         }
