@@ -298,6 +298,10 @@ class StdModule
 
     public function addAction($functionName, $buttonName = '')
     {
+        if (!$this->enabled) {
+            return;
+        }
+
         $buttonName = $buttonName ?? $functionName;
 
         $this->actions[] = [
