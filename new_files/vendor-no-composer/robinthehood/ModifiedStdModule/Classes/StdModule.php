@@ -256,6 +256,10 @@ class StdModule
 
     public function checkForUpdate()
     {
+        if ($_GET['action']) {
+            return;
+        }
+        
         if ($this->getVersion()) {
             $from = ' von ' . $this->getVersion();
         }
