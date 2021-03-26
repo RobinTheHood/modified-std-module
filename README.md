@@ -67,7 +67,98 @@ public function remove()
 ...
 ```
 
-### Class: Configuration
+### Add Configuration
+You can add a configuration with a short KEY. Internaly the KEY will be prefixed with your init() moduleName configuration. Example: Is your init() configuration is `MODULE_MC_MY_FIRST_MODULE` and your configuration key is `USER_NAME` the whole configuration name is `MODULE_MC_MY_FIRST_MODULE_USER_NAME`.
+
+You can use the following methods in the `public StdModule::install()` method.
+
+```php
+// Example
+public __construct() {
+    $this->init('MODULE_MC_MY_FIRST_MODULE');
+    $this->addKey('USER_NAME');
+}
+
+public function install()
+{
+    parent::install();
+    $this->addConfiguration('USER_NAME', 'default', 6, 1);
+}
+```
+
+Most of the addConfiguration methods can handle the following parameters:
+
+- `key` - Configuration key name
+- `value` - Default value
+- `groupId` - Shoudt be `6` for system modules
+- `sortOrder` - Sort position of the configuration entry
+
+#### Add a textfield configuration
+```php
+public StdModule::addConfiguration(string $key, string $value, int $groupId, int $sortOrder): void
+
+// Example
+$this->addConfiguration('USER_NAME', 'default', 6, 1);
+```
+
+#### Adds a YES | NO configuration
+```php
+public StdModule::addConfigurationSelect(string $key, bool $value, int $groupId, int $sortOrder): void
+
+// Example
+$this->addConfigurationSelect('SHOW_LASTNAME', true, 6, 1);
+```
+
+#### Adds a textfield configuration
+```php
+public StdModule::addConfigurationTextArea(string $key, string $value, int $groupId, int $sortOrder): void
+
+// Example
+$this->addConfigurationTextArea('IMPRINT', 'a longer text', 6, 1);
+```
+
+#### Adds a order status select configuration
+```php
+public StdModule::addConfigurationOrderStatus(string $key, int $value, int $groupId, int $sortOrder): void
+
+// Example
+$this->addConfigurationTextArea('CHANGE_TO_STATUS', 2, 6, 1);
+```
+
+#### Adds a select with multible options
+*Notice: option-id/name and option-value are equal. You can add a translation in the language file.*
+```php
+public StdModule::addConfigurationDropDown(string $key, string $value, int $groupId, int $sortOrder, array $values): void
+
+// Example
+$this->addConfigurationDropDown('MODE', 'a', 6, 1, ['a', 'b', 'c']);
+```
+
+#### Adds a select with multible options from static function
+*Notice: option-id/name and option-value are equal. You can add a translation in the language file.*
+
+```php
+public StdModule::addConfigurationDropDownByStaticFunction(string $key, string $value, int $groupId, int $sortOrder, string $staticCallFunctionName): void
+
+// Example
+public static function aStaticMethod()
+{
+    return ['a', 'b', 'c', 'd'];
+}
+
+$this->addConfigurationDropDownByStaticFunction('MODE', 'a', 6, 1, 'aStaticMethod');
+```
+
+### Delete configuration
+
+```php
+public StdModule::deleteConfiguration(string $key): void
+
+// Example
+$this->deleteConfiguration('STATUS');
+```
+
+### Easy access with class Configuration
 In order to use configuration values you can use them as usual:
 
 ```php
