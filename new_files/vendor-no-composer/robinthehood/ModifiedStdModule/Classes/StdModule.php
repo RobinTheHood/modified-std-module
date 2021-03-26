@@ -324,10 +324,23 @@ class StdModule
 
         $this->description = $buttons . $this->getDescription();
 
-        if ($_GET['moduleaction'] == $functionName && $_GET['module'] == $this->code) {
-            $functionName = 'invoke' . ucfirst($functionName);
-            $this->$functionName();
+        $this->invokeAction();
+    }
+
+    private function invokeAction()
+    {
+        if ($_GET['module'] != $this->code) {
+            return;
         }
+
+        $functionName = $_GET['moduleaction'];
+        $functionName = 'invoke' . ucfirst($functionName);
+
+        if (!method_exists($this, $functionName)) {
+            return;
+        }
+
+        $this->$functionName();
     }
 
     private function renderButton($functionName, $buttonName)
