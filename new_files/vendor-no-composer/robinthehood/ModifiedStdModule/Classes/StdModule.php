@@ -175,6 +175,10 @@ class StdModule
     public function remove()
     {
         $this->deleteConfiguration('STATUS');
+
+        if ($this->getVersion()) {
+            $this->deleteConfiguration('VERSION', $version);
+        }
     }
 
     public function keys()
