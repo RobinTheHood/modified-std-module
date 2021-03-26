@@ -254,26 +254,42 @@ class StdModule
         xtc_db_query("ALTER TABLE " . TABLE_ADMIN_ACCESS . " DROP $key");
     }
 
-    public function checkForUpdate()
+    public function checkForUpdate($showUpdateButton = false)
     {
         if (!$this->enabled) {
-            return;
+            return; // do not check for update
         }
-        
+
+        if (!static::VERSION) {
+            return; // do not check for update
+        }
+
+        $this->invokeAction();
+
         if ($_GET['action']) {
-            return;
+            return; // do not check for update
         }
         
+        if ($_GET['moduleaction']) {
+            return; // do not check for update
+        }
+
+        if (static::VERSION == $this->getVersion()) {
+            return; // no update needed
+        }
+
         if ($this->getVersion()) {
             $from = ' von ' . $this->getVersion();
         }
 
-        if (static::VERSION && static::VERSION != $this->getVersion()) {
-            $this->addMessage(
-                $this->getConfig('TITLE') .
-                ' benötigt ein Update ' . $from . ' auf ' .
-                static::VERSION . ' - Klicken Sie dafür beim Modul auf Update.'
-            );
+        $this->addMessage(
+            $this->getConfig('TITLE') .
+            ' benötigt ein Update ' . $from . ' auf ' .
+            static::VERSION . ' - Klicken Sie dafür beim Modul auf Update.'
+        );
+
+        if ($showUpdateButton) {
+            $this->addAction('update', 'Update');
         }
     }
 
