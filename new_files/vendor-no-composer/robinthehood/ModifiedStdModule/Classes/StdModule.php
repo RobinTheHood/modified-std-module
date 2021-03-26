@@ -256,6 +256,10 @@ class StdModule
 
     public function checkForUpdate()
     {
+        if (!$this->enabled) {
+            return;
+        }
+        
         if ($_GET['action']) {
             return;
         }
