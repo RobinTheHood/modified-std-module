@@ -201,14 +201,14 @@ class StdModule
         $this->addConfiguration($key, $value, $groupId, $sortOrder, 'orderStatus', 'xtc_get_order_status_name');
     }
 
-    public function addCofigurationDropDown($key, $value, $groupId, $sortOrder, $values)
+    public function addConfigurationDropDown($key, $value, $groupId, $sortOrder, $values)
     {
         $arrayAsString = "['" . implode("','", $values) .  "']";
         $setFunction = 'xtc_cfg_select_option(' . $arrayAsString . ',';
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
-    public function addCofigurationDropDownByStaticFunction($key, $value, $groupId, $sortOrder, $staticCallFunctionName)
+    public function addConfigurationDropDownByStaticFunction($key, $value, $groupId, $sortOrder, $staticCallFunctionName)
     {
         $setFunction = 'xtc_cfg_select_option(' . get_class($this) . '::' . $staticCallFunctionName . '(),';
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
