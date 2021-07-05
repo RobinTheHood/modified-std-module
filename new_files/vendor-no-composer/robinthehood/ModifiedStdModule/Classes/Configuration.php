@@ -11,7 +11,7 @@ class Configuration
         $this->prefix = $prefix;
 
         $constants = $this->filterConstants($prefix);
-        
+
         $this->defineVariablesFromContants($constants, $prefix);
     }
 
@@ -45,7 +45,7 @@ class Configuration
         foreach ($constants as $key => $value) {
             $var = $this->removePrefix($key, $prefix);
             $var = $this->screamingCaseToCamelCase($var);
-            
+
             $this->$var = $value;
         }
     }

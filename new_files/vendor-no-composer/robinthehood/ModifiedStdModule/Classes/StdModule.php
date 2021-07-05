@@ -91,7 +91,7 @@ class StdModule
     public function getSortOrder()
     {
         $sortOrder = $this->getConfig('SORT_ORDER', 0);
-         
+
         return $sortOrder;
     }
 
@@ -166,7 +166,7 @@ class StdModule
         $this->addConfigurationSelect('STATUS', 'true', 6, 1);
 
         $installedVersion = $this->getVersion();
-    
+
         if (static::VERSION && !$installedVersion) {
             $this->setVersion(static::VERSION);
         }
@@ -273,7 +273,7 @@ class StdModule
         if ($_GET['action']) {
             return; // do not check for update
         }
-        
+
         if ($_GET['moduleaction']) {
             return; // do not check for update
         }
