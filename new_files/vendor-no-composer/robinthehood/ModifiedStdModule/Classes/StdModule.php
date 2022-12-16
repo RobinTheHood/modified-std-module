@@ -26,14 +26,16 @@ class StdModule
     private $tempVersion;
     private $actions = [];
 
-    public function init($modulePrefix, $code = '')
+    public function __construct($code = '')
     {
-        $this->modulePrefix = $modulePrefix;
+        $class = get_class($this);
+
+        $this->modulePrefix = 'MODULE_' . strtoupper($class);
 
         if ($code) {
             $this->code = $code;
         } else {
-            $this->code = get_class($this);
+            $this->code = $class;
         }
 
         $this->title = $this->getTitle();
