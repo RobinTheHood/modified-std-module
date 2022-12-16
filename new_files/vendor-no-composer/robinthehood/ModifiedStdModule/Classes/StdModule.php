@@ -26,11 +26,15 @@ class StdModule
     private $tempVersion;
     private $actions = [];
 
-    public function __construct($code = '')
+    public function __construct($modulePrefix = '', $code = '')
     {
         $class = $this::class;
 
-        $this->modulePrefix = 'MODULE_' . strtoupper($class);
+        if ($modulePrefix) {
+            $this->modulePrefix = $modulePrefix;
+        } else {
+            $this->modulePrefix = 'MODULE_' . strtoupper($class);
+        }
 
         if ($code) {
             $this->code = $code;
@@ -44,6 +48,14 @@ class StdModule
         $this->enabled = $this->getEnabled();
 
         $this->addKey('STATUS');
+    }
+
+    public function init($modulePrefix, $code = '')
+    {
+        self::__construct($modulePrefix, $code);
+
+        /** E_USER_DEPRECATED does not work */
+        trigger_error('Using the init method is deprecated. Use parent::__construct instead.', E_USER_NOTICE);
     }
 
     public function addMessage($message, $messageType = self::MESSAGE_ERROR)
