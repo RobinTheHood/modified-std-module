@@ -26,7 +26,7 @@ class StdModule
     private $tempVersion;
     private $actions = [];
 
-    public function init($modulePrefix, $code = '')
+    public function init(string $modulePrefix, string $code = '')
     {
         $this->modulePrefix = $modulePrefix;
 
@@ -44,7 +44,7 @@ class StdModule
         $this->addKey('STATUS');
     }
 
-    public function addMessage($message, $messageType = self::MESSAGE_ERROR)
+    public function addMessage(string $message, int $messageType = self::MESSAGE_ERROR)
     {
         global $rthModifiedStdModuleMessages;
 
@@ -68,7 +68,7 @@ class StdModule
         }
     }
 
-    public function addKey($key)
+    public function addKey(string $key)
     {
         $this->keys[] = $this->getModulePrefix() . '_' . $key;
     }
@@ -109,7 +109,7 @@ class StdModule
         return $this->modulePrefix;
     }
 
-    public function getConfig($name, $default = '')
+    public function getConfig(string $name, string $default = '')
     {
         $constantName = $this->getModulePrefix() . '_' . $name;
 
@@ -127,14 +127,14 @@ class StdModule
         return $this->tempVersion;
     }
 
-    public function setVersion($version)
+    public function setVersion(string $version)
     {
         $this->tempVersion = $version;
         $this->deleteConfiguration('VERSION', $version);
         $this->addConfiguration('VERSION', $version, 6, 1);
     }
 
-    public function process($file)
+    public function process(string $file)
     {
     }
 
@@ -186,35 +186,35 @@ class StdModule
         return $this->keys;
     }
 
-    public function addConfigurationSelect($key, $value, $groupId, $sortOrder)
+    public function addConfigurationSelect(string $key, string $value, int $groupId, int $sortOrder)
     {
         $this->addConfiguration($key, $value, $groupId, $sortOrder, 'select');
     }
 
-    public function addConfigurationTextArea($key, $value, $groupId, $sortOrder)
+    public function addConfigurationTextArea(string $key, string $value, int $groupId, int $sortOrder)
     {
         $this->addConfiguration($key, $value, $groupId, $sortOrder, 'textArea');
     }
 
-    public function addConfigurationOrderStatus($key, $value, $groupId, $sortOrder)
+    public function addConfigurationOrderStatus(string $key, string $value, int $groupId, int $sortOrder)
     {
         $this->addConfiguration($key, $value, $groupId, $sortOrder, 'orderStatus', 'xtc_get_order_status_name');
     }
 
-    public function addConfigurationDropDown($key, $value, $groupId, $sortOrder, $values)
+    public function addConfigurationDropDown(string $key, string $value, int $groupId, int $sortOrder, array $values)
     {
         $arrayAsString = "['" . implode("','", $values) .  "']";
         $setFunction = 'xtc_cfg_select_option(' . $arrayAsString . ',';
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
-    public function addConfigurationDropDownByStaticFunction($key, $value, $groupId, $sortOrder, $staticCallFunctionName)
+    public function addConfigurationDropDownByStaticFunction(string $key, string $value, int $groupId, int $sortOrder, string $staticCallFunctionName)
     {
         $setFunction = 'xtc_cfg_select_option(' . get_class($this) . '::' . $staticCallFunctionName . '(),';
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
-    public function addConfiguration($key, $value, $groupId, $sortOrder, $setFunction = '', $useFunction = '')
+    public function addConfiguration(string $key, string $value, int $groupId, int $sortOrder, string $setFunction = '', string $useFunction = '')
     {
         $key = $this->getModulePrefix() . '_' . $key;
 
@@ -231,14 +231,14 @@ class StdModule
         xtc_db_query("INSERT INTO `" . TABLE_CONFIGURATION . "` (`configuration_key`, `configuration_value`, `configuration_group_id`, `sort_order`, `set_function`, `use_function`, `date_added`) VALUES ('$key', '$value', '$groupId', '$sortOrder', '$setFunction', '$useFunction', NOW())");
     }
 
-    public function deleteConfiguration($key)
+    public function deleteConfiguration(string $key)
     {
         $key = $this->getModulePrefix() . '_' . $key;
 
         xtc_db_query("DELETE FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = '$key'");
     }
 
-    public function renameConfiguration($oldKey, $newKey)
+    public function renameConfiguration(string $oldKey, string $newKey)
     {
         $oldKey = $this->getModulePrefix() . '_' . $oldKey;
         $newKey = $this->getModulePrefix() . '_' . $newKey;
@@ -246,19 +246,19 @@ class StdModule
         xtc_db_query("UPDATE `" . TABLE_CONFIGURATION . "` SET `configuration_key` = '$newKey' WHERE `configuration_key` = '$oldKey'");
     }
 
-    public function setAdminAccess($key)
+    public function setAdminAccess(string $key)
     {
         xtc_db_query("ALTER TABLE `" . TABLE_ADMIN_ACCESS . "` ADD `$key` INT(1) NOT NULL DEFAULT 0");
         xtc_db_query("UPDATE `" . TABLE_ADMIN_ACCESS . "` SET `$key` = 1 WHERE `customers_id` = 1");
         xtc_db_query("UPDATE `" . TABLE_ADMIN_ACCESS . "` SET `$key` = 1 WHERE `customers_id`='groups'");
     }
 
-    public function deleteAdminAccess($key)
+    public function deleteAdminAccess(string $key)
     {
         xtc_db_query("ALTER TABLE " . TABLE_ADMIN_ACCESS . " DROP $key");
     }
 
-    public function checkForUpdate($showUpdateButton = false)
+    public function checkForUpdate(bool $showUpdateButton = false)
     {
         if (!$this->enabled) {
             return; // do not check for update
@@ -324,7 +324,7 @@ class StdModule
         return self::UPDATE_NOTHING;
     }
 
-    public function addAction($functionName, $buttonName = '')
+    public function addAction(string $functionName, string $buttonName = '')
     {
         if (!$this->enabled) {
             return;
@@ -363,7 +363,7 @@ class StdModule
         $this->$functionName();
     }
 
-    private function renderButton($functionName, $buttonName)
+    private function renderButton(string $functionName, string $buttonName)
     {
         $url = xtc_href_link(
             FILENAME_MODULE_EXPORT,
