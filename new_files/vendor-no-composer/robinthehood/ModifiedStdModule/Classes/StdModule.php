@@ -54,13 +54,11 @@ class StdModule
             echo '<br>';
         }
 
-        if ($messageType == self::MESSAGE_ERROR) {
-            $class = 'error_message';
-        } elseif ($messageType == self::MESSAGE_SUCCESS) {
-            $class = 'success_message';
-        } else {
-            $class = 'error_message';
-        }
+        $class = match ($messageType) {
+            self::MESSAGE_ERROR => 'error_message',
+            self::MESSAGE_SUCCESS => 'success_message',
+            default => 'error_message',
+        };
 
         if (!$rthModifiedStdModuleMessages[$hash]) {
             echo '<div class="' . $class . '">' . $message . '</div>';
@@ -218,13 +216,11 @@ class StdModule
     {
         $key = $this->getModulePrefix() . '_' . $key;
 
-        if ($setFunction == 'select') {
-            $setFunction = "xtc_cfg_select_option(array('true', 'false'),";
-        } elseif ($setFunction == 'textArea') {
-            $setFunction = "xtc_cfg_textarea(";
-        } elseif ($setFunction == 'orderStatus') {
-            $setFunction = "xtc_cfg_pull_down_order_statuses(";
-        }
+        $setFunction = match ($setFunction) {
+            'select' => "xtc_cfg_select_option(array('true', 'false'),",
+            'textArea' => "xtc_cfg_textarea(",
+            'orderStatus' => "xtc_cfg_pull_down_order_statuses(",
+        };
 
         $setFunction = str_replace("'", "\\'", $setFunction);
 
