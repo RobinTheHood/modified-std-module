@@ -84,7 +84,12 @@ class StdModule
 
     public function addKey($key)
     {
-        $this->keys[] = $this->getModulePrefix() . '_' . $key;
+        $fullKeyName = $this->getModulePrefix() . '_' . $key;
+        if (in_array($fullKeyName, $this->keys())) {
+            return;
+        }
+
+        $this->keys[] = $fullKeyName;
     }
 
     public function getTitle()
