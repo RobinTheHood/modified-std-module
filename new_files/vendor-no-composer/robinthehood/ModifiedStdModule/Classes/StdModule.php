@@ -28,7 +28,7 @@ class StdModule
 
     public function __construct($modulePrefix = '', $code = '')
     {
-        $class = $this::class;
+        $class = get_class($this);
 
         if ($modulePrefix) {
             $this->modulePrefix = $modulePrefix;
