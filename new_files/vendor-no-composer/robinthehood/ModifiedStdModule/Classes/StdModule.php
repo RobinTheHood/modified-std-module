@@ -21,7 +21,7 @@ class StdModule
     public $sort_order;
 
     public $modulePrefix;
-    public $keys;
+    public $keys = [];
 
     private $tempVersion;
     private $actions = [];
