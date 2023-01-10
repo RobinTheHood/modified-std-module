@@ -297,8 +297,8 @@ class StdModule
             return; // do not check for update
         }
 
-        if (static::VERSION == $this->getVersion()) {
-            return; // no update needed
+        if (-1 !== version_compare($this->getVersion(), static::VERSION)) {
+            return false; // module is up-to-date
         }
 
         if ($this->getVersion()) {
