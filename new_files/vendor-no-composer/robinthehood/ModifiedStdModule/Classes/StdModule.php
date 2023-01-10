@@ -306,7 +306,7 @@ class StdModule
         }
 
         $this->addMessage(
-            $this->getConfig('TITLE') .
+            '<a href="' . xtc_href_link(FILENAME_MODULE_EXPORT, http_build_query(array('set' => 'system', 'module' => $this->code)), 'SSL') . '">' . $this->getConfig('TITLE') . '</a>' .
             ' benötigt ein Update ' . $from . ' auf ' .
             static::VERSION . ' - Klicken Sie dafür beim Modul auf Update.'
         );
