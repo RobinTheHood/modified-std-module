@@ -277,28 +277,35 @@ class StdModule
         xtc_db_query("ALTER TABLE " . TABLE_ADMIN_ACCESS . " DROP $key");
     }
 
-    public function checkForUpdate($showUpdateButton = false)
+    /**
+     * Checks for module updates. Returns whether an update is available.
+     *
+     * @param bool $showUpdateButton Whether to show the Update button.
+     *
+     * @return bool
+     */
+    public function checkForUpdate($showUpdateButton = false): bool
     {
         if (!$this->enabled) {
-            return; // do not check for update
+            return false; // do not check for update
         }
 
         if (!static::VERSION) {
-            return; // do not check for update
+            return false; // do not check for update
         }
 
         $this->invokeAction();
 
         if ($_GET['action']) {
-            return; // do not check for update
+            return false; // do not check for update
         }
 
         if ($_GET['moduleaction']) {
-            return; // do not check for update
+            return false; // do not check for update
         }
 
-        if (static::VERSION == $this->getVersion()) {
-            return; // no update needed
+        if (-1 !== version_compare($this->getVersion(), static::VERSION)) {
+            return false; // module is up-to-date
         }
 
         if ($this->getVersion()) {
@@ -314,6 +321,8 @@ class StdModule
         if ($showUpdateButton) {
             $this->addAction('update', 'Update');
         }
+
+        return true;
     }
 
     public function invokeUpdate()
