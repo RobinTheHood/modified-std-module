@@ -26,6 +26,24 @@ class StdModule
     private $tempVersion;
     private $actions = [];
 
+    public static function isEnabled(string $module)
+    {
+        $statusConstant = $module . '_STATUS';
+
+        if (defined($statusConstant) && 'true' === constant($statusConstant)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function isDisabled(string $module)
+    {
+        $isDisabled = !self::isEnabled($module);
+
+        return $isDisabled;
+    }
+
     public function __construct($modulePrefix = '', $code = '')
     {
         $class = get_class($this);
