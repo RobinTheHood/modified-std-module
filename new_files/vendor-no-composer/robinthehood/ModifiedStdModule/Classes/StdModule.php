@@ -214,7 +214,7 @@ class StdModule
         $this->deleteConfiguration('STATUS');
 
         if ($this->getVersion()) {
-            $this->deleteConfiguration('VERSION', $version);
+            $this->deleteConfiguration('VERSION');
         }
     }
 
