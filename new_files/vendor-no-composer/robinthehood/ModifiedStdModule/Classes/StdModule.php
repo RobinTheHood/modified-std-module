@@ -306,10 +306,10 @@ class StdModule
         }
 
         $moduleLink = xtc_href_link(
-            FILENAME_MODULE_EXPORT,
+            pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_BASENAME),
             http_build_query(
                 array(
-                    'set' => 'system',
+                    'set' => $_GET['set'],
                     'module' => $this->code
                 )
             ),
