@@ -305,10 +305,26 @@ class StdModule
             $from = ' von ' . $this->getVersion();
         }
 
+        $moduleLink = xtc_href_link(
+            FILENAME_MODULE_EXPORT,
+            http_build_query(
+                array(
+                    'set' => 'system',
+                    'module' => $this->code
+                )
+            ),
+            'SSL'
+        );
         $this->addMessage(
-            '<a href="' . xtc_href_link(FILENAME_MODULE_EXPORT, http_build_query(array('set' => 'system', 'module' => $this->code)), 'SSL') . '">' . $this->getConfig('TITLE') . '</a>' .
-            ' benötigt ein Update ' . $from . ' auf ' .
-            static::VERSION . ' - Klicken Sie dafür beim Modul auf Update.'
+            sprintf(
+                /** TRANSLATORS: %1$s: Module name. %2$s: Module current version. %3$s: Module new version. */
+                '%1$s benötigt ein Update von %2$s auf %3$s - Klicken Sie dafür beim Modul auf Update.',
+                '<a href="' . $moduleLink . '">' .
+                    $this->getConfig('TITLE') .
+                '</a>',
+                $from,
+                static::VERSION
+            )
         );
 
         if ($showUpdateButton) {
