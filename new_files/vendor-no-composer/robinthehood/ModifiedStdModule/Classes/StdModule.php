@@ -28,9 +28,26 @@ class StdModule
 
     public static function isEnabled(string $module)
     {
+        if ('' === $module) {
+            $module = self::getModuleNameGuess();
+        }
+
         $statusConstant = $module . '_STATUS';
 
-        if (defined($statusConstant) && 'true' === constant($statusConstant)) {
+        if (!defined($statusConstant)) {
+            trigger_error(
+                sprintf(
+                    /** TRANSLATORS: %s: Module name. */
+                    '"%s" is not a valid module name.',
+                    $module
+                ),
+                E_USER_ERROR
+            );
+
+            return false;
+        }
+
+        if ('true' === constant($statusConstant)) {
             return true;
         }
 
@@ -42,6 +59,44 @@ class StdModule
         $isDisabled = !self::isEnabled($module);
 
         return $isDisabled;
+    }
+
+    /**
+     * Attempt to determine which module called this function.
+     *
+     * @return string
+     */
+    public static function getModuleNameGuess(): string
+    {
+        $backtraces = debug_backtrace();
+        $backtraces = array_filter(
+            $backtraces,
+            function ($backtrace) {
+                $skip = [
+                    'rth_modified_std_module',
+                    pathinfo(__FILE__, PATHINFO_FILENAME),
+                ];
+
+                $filename = pathinfo($backtrace['file'], PATHINFO_FILENAME);
+
+                if (in_array($filename, $skip, true)) {
+                    return false;
+                }
+
+                return true;
+            },
+        );
+
+        if (count($backtraces) > 0) {
+            $backtrace_first = reset($backtraces);
+            $backtrace_file = pathinfo($backtrace_first['file'], PATHINFO_FILENAME);
+
+            $moduleName = 'MODULE_' . strtoupper($backtrace_file);
+        } else {
+            trigger_error('Unable to guess the module name. A backtrace failed.', E_USER_WARNING);
+        }
+
+        return '';
     }
 
     public function __construct($modulePrefix = '', $code = '')

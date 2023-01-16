@@ -9,14 +9,14 @@ use RobinTheHood\ModifiedStdModule\Classes\StdModule;
 require_once DIR_FS_DOCUMENT_ROOT . '/vendor-no-composer/autoload.php';
 
 if (!function_exists('rth_is_module_enabled')) {
-    function rth_is_module_enabled(string $moduleName): bool
+    function rth_is_module_enabled(string $moduleName = ''): bool
     {
         return StdModule::isEnabled($moduleName);
     }
 }
 
 if (!function_exists('rth_is_module_disabled')) {
-    function rth_is_module_disabled(string $moduleName): bool
+    function rth_is_module_disabled(string $moduleName = ''): bool
     {
         return StdModule::isDisabled($moduleName);
     }
