@@ -97,7 +97,7 @@ class StdModule
         $version = $this->getVersion();
         $title = $this->getConfig('TITLE');
         if ($version) {
-            return $title . ' (' . $version . ')';
+            return $title . ' (v' . $version . ')';
         }
         return $title;
     }
