@@ -312,7 +312,9 @@ class StdModule
             return false; // do not check for update
         }
 
-        $this->invokeAction();
+        if (isset($_GET['moduleaction'])) {
+            $this->invokeAction();
+        }
 
         if ($_GET['action']) {
             return false; // do not check for update
