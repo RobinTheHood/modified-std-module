@@ -430,8 +430,14 @@ class StdModule
     private function renderButton($functionName, $buttonName)
     {
         $url = xtc_href_link(
-            FILENAME_MODULE_EXPORT,
-            'set=system&module=' . $this->code . '&moduleaction=' . $functionName
+            pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_BASENAME),
+            http_build_query(
+                [
+                    'set' => $_GET['set'],
+                    'module' => $this->code,
+                    'moduleaction' => $functionName
+                ]
+            )
         );
 
         return '
