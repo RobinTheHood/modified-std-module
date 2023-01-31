@@ -72,4 +72,21 @@ class Configuration
         $string = lcfirst($string);
         return $string;
     }
+
+    protected function screamingCaseToLispCase(string $string)
+    {
+        $parts = explode('_', $string);
+
+        foreach ($parts as &$part) {
+            if (!$part) {
+                continue;
+            }
+
+            $part = strtolower($part);
+        }
+
+        $string = implode('-', $parts);
+
+        return $string;
+    }
 }
