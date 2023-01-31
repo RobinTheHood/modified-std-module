@@ -55,7 +55,7 @@ class Configuration
         return str_replace($prefix, '', $string);
     }
 
-    private function screamingCaseToCamelCase($string)
+    public function screamingCaseToCamelCase($string)
     {
         $parts = explode('_', $string);
 
@@ -70,6 +70,23 @@ class Configuration
 
         $string = implode('', $parts);
         $string = lcfirst($string);
+        return $string;
+    }
+
+    public function screamingCaseToLispCase(string $string)
+    {
+        $parts = explode('_', $string);
+
+        foreach ($parts as &$part) {
+            if (!$part) {
+                continue;
+            }
+
+            $part = strtolower($part);
+        }
+
+        $string = implode('-', $parts);
+
         return $string;
     }
 }
