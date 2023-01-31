@@ -305,7 +305,7 @@ class StdModule
     public function checkForUpdate($showUpdateButton = false): bool
     {
         /** Abort if the user is not an admin */
-        if (!isset($_SESSION['customers_status']['customers_status_id']) || '1' === $_SESSION['customers_status']['customers_status_id']) {
+        if (!isset($_SESSION['customers_status']['customers_status_id']) || '0' !== $_SESSION['customers_status']['customers_status_id']) {
             return false;
         }
 
