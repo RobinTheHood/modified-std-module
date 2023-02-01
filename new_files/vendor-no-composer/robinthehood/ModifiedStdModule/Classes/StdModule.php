@@ -337,7 +337,7 @@ class StdModule
             $from = ' von ' . $this->getVersion();
         }
 
-        if (isset($_SERVER['SCRIPT_NAME'])) {
+        if (isset($_SERVER['SCRIPT_NAME'], $_GET['set'])) {
             $moduleLink = xtc_href_link(
                 pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_BASENAME),
                 http_build_query(
@@ -439,7 +439,7 @@ class StdModule
 
     private function renderButton($functionName, $buttonName)
     {
-        if (!isset($_SERVER['SCRIPT_NAME'])) {
+        if (!isset($_SERVER['SCRIPT_NAME'], $_GET['set'])) {
             return '';
         }
 
