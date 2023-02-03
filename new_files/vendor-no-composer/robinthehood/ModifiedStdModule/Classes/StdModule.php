@@ -268,11 +268,29 @@ class StdModule
         xtc_db_query("INSERT INTO `" . TABLE_CONFIGURATION . "` (`configuration_key`, `configuration_value`, `configuration_group_id`, `sort_order`, `set_function`, `use_function`, `date_added`) VALUES ('$key', '$value', '$groupId', '$sortOrder', '$setFunction', '$useFunction', NOW())");
     }
 
-    public function deleteConfiguration($key)
+    public function removeConfiguration(string $key): bool
     {
-        $key = $this->getModulePrefix() . '_' . $key;
+        $key              = $this->getModulePrefix() . '_' . $key;
+        $remove_key_query = xtc_db_query(
+            sprintf(
+                /** TRANSLATORS: %1$s: Database table "configuration". %2$s: Value for "configuration_key". */
+                'DELETE FROM `%1$s` WHERE `configuration_key` = "%2$s"',
+                TABLE_CONFIGURATION,
+                $key
+            )
+        );
 
-        xtc_db_query("DELETE FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = '$key'");
+        $success = false !== $remove_key_query;
+
+        return $success;
+    }
+
+    public function deleteConfiguration(string $key): bool
+    {
+        /** E_USER_DEPRECATED does not work */
+        trigger_error('Using the deleteConfiguration method is deprecated. Use removeConfiguration instead.', E_USER_NOTICE);
+
+        return $this->removeConfiguration($key);
     }
 
     public function renameConfiguration($oldKey, $newKey)
