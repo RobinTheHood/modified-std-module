@@ -341,10 +341,10 @@ class StdModule
             $moduleLink = xtc_href_link(
                 pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_BASENAME),
                 http_build_query(
-                    array(
+                    [
                         'set' => $_GET['set'],
                         'module' => $this->code
-                    )
+                    ]
                 ),
                 'SSL'
             );
