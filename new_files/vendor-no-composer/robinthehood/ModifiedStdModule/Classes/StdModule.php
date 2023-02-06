@@ -305,6 +305,7 @@ class StdModule
     public function checkForUpdate($showUpdateButton = false): bool
     {
         /** Abort if the user is not an admin */
+        // TODO: extract to own private method
         if (!isset($_SESSION['customers_status']['customers_status_id']) || '0' !== $_SESSION['customers_status']['customers_status_id']) {
             return false;
         }
@@ -337,6 +338,7 @@ class StdModule
             $from = ' von ' . $this->getVersion();
         }
 
+        // TODO: extract to own private method
         if (isset($_SERVER['SCRIPT_NAME'], $_GET['set'])) {
             $moduleLink = xtc_href_link(
                 pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_BASENAME),
