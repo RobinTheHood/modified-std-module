@@ -2,6 +2,8 @@
 
 namespace RobinTheHood\ModifiedStdModule\Classes;
 
+use RobinTheHood\ModifiedStdModule\Classes\CaseConverter;
+
 class Configuration
 {
     private $prefix;
@@ -44,7 +46,7 @@ class Configuration
     {
         foreach ($constants as $key => $value) {
             $var = $this->removePrefix($key, $prefix);
-            $var = $this->screamingCaseToCamelCase($var);
+            $var = CaseConverter::screamingToCamel($var);
 
             $this->$var = $value;
         }
@@ -57,36 +59,31 @@ class Configuration
 
     public function screamingCaseToCamelCase($string)
     {
-        $parts = explode('_', $string);
+        trigger_error(
+            sprintf(
+                /** TRANSLATORS: %1$s: Old method name. %2$s: New method name.*/
+                'Using the %1$s method is deprecated. Use %2$s instead.',
+                __METHOD__,
+                'CaseConverter::screamingToCamel'
+            ),
+            E_USER_DEPRECATED
+        );
 
-        foreach ($parts as &$part) {
-            if (!$part) {
-                continue;
-            }
-
-            $part = strtolower($part);
-            $part = ucfirst($part);
-        }
-
-        $string = implode('', $parts);
-        $string = lcfirst($string);
-        return $string;
+        return CaseConverter::screamingToCamel($string);
     }
 
     public function screamingCaseToLispCase(string $string)
     {
-        $parts = explode('_', $string);
+        trigger_error(
+            sprintf(
+                /** TRANSLATORS: %1$s: Old method name. %2$s: New method name.*/
+                'Using the %1$s method is deprecated. Use %2$s instead.',
+                __METHOD__,
+                'CaseConverter::screamingToLisp'
+            ),
+            E_USER_DEPRECATED
+        );
 
-        foreach ($parts as &$part) {
-            if (!$part) {
-                continue;
-            }
-
-            $part = strtolower($part);
-        }
-
-        $string = implode('-', $parts);
-
-        return $string;
+        return CaseConverter::screamingToLisp($string);
     }
 }
