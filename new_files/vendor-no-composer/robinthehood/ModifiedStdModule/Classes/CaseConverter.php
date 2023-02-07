@@ -17,13 +17,14 @@ class CaseConverter
         $camelParts = array_map(
             function (string $camelPart) {
                 $camelPart = strtolower($camelPart);
-                $camelPart = lcfirst($camelPart);
+                $camelPart = ucfirst($camelPart);
 
                 return $camelPart;
             },
             $screamingParts
         );
         $camelString = implode('', $camelParts);
+        $camelString = lcfirst($camelString);
 
         return $camelString;
     }
