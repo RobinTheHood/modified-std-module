@@ -15,13 +15,13 @@ class CaseConverter
     {
         $screamingParts = explode('_', $screamingString);
         $camelParts = array_map(
-            $screamingParts,
             function (string $camelPart) {
                 $camelPart = strtolower($camelPart);
                 $camelPart = ucfirst($camelPart);
 
                 return $camelPart;
-            }
+            },
+            $screamingParts
         );
         $camelString = implode('', $camelParts);
 
@@ -39,12 +39,12 @@ class CaseConverter
     {
         $screamingParts = explode('_', $screamingString);
         $lispParts = array_map(
-            $screamingParts,
             function (string $lispPart) {
                 $lispPart = strtolower($lispPart);
 
                 return $lispPart;
-            }
+            },
+            $screamingParts
         );
         $lispString = implode('-', $lispParts);
 
