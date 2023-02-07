@@ -6,25 +6,7 @@ class Configuration
 {
     private $prefix;
 
-    public function __construct($prefix)
-    {
-        $this->prefix = $prefix;
-
-        $constants = $this->filterConstants($prefix);
-
-        $this->defineVariablesFromContants($constants, $prefix);
-    }
-
-    public function __get($key)
-    {
-        if (isset($this->$key)) {
-            return $this->$key;
-        }
-
-        throw new \RuntimeException("Unknown configuration variable " . $key);
-    }
-
-    private function filterConstants($prefix)
+    private static function filterConstants($prefix)
     {
         $result = [];
 
@@ -40,22 +22,12 @@ class Configuration
         return $result;
     }
 
-    private function defineVariablesFromContants($constants, $prefix)
-    {
-        foreach ($constants as $key => $value) {
-            $var = $this->removePrefix($key, $prefix);
-            $var = $this->screamingCaseToCamelCase($var);
-
-            $this->$var = $value;
-        }
-    }
-
-    private function removePrefix($string, $prefix)
+    private static function removePrefix($string, $prefix)
     {
         return str_replace($prefix, '', $string);
     }
 
-    public function screamingCaseToCamelCase($string)
+    public static function screamingCaseToCamelCase($string)
     {
         $parts = explode('_', $string);
 
@@ -73,7 +45,7 @@ class Configuration
         return $string;
     }
 
-    public function screamingCaseToLispCase(string $string)
+    public static function screamingCaseToLispCase(string $string)
     {
         $parts = explode('_', $string);
 
@@ -88,5 +60,33 @@ class Configuration
         $string = implode('-', $parts);
 
         return $string;
+    }
+
+    public function __construct($prefix)
+    {
+        $this->prefix = $prefix;
+
+        $constants = self::filterConstants($prefix);
+
+        $this->defineVariablesFromContants($constants, $prefix);
+    }
+
+    public function __get($key)
+    {
+        if (isset($this->$key)) {
+            return $this->$key;
+        }
+
+        throw new \RuntimeException("Unknown configuration variable " . $key);
+    }
+
+    private function defineVariablesFromContants($constants, $prefix)
+    {
+        foreach ($constants as $key => $value) {
+            $var = self::removePrefix($key, $prefix);
+            $var = self::screamingCaseToCamelCase($var);
+
+            $this->$var = $value;
+        }
     }
 }
