@@ -16,19 +16,16 @@ class CaseConverter
     public static function screamingToCamel(string $screamingString): string
     {
         $screamingParts = explode('_', $screamingString);
-        $camelParts = [];
-        $camelString = '';
+        $camelParts = array_map(
+            $screamingParts,
+            function (string $camelPart) {
+                $camelPart = strtolower($camelPart);
+                $camelPart = ucfirst($camelPart);
 
-        foreach ($screamingParts as $screamingPart) {
-            $camelPart = $screamingPart;
-            $camelPart = strtolower($camelPart);
-            $camelPart = ucfirst($camelPart);
-
-            $camelParts[] = $camelPart;
-        }
-
+                return $camelPart;
+            }
+        );
         $camelString = implode('', $camelParts);
-        $camelString = lcfirst($camelString);
 
         return $camelString;
     }
@@ -43,15 +40,14 @@ class CaseConverter
     public static function screamingToLisp(string $screamingString): string
     {
         $screamingParts = explode('_', $screamingString);
-        $lispParts = [];
-        $lispString = '';
+        $lispParts = array_map(
+            $screamingParts,
+            function (string $lispPart) {
+                $lispPart = strtolower($lispPart);
 
-        foreach ($screamingParts as $screamingPart) {
-            $lispPart = strtolower($screamingPart);
-
-            $lispParts[] = $lispPart;
-        }
-
+                return $lispPart;
+            }
+        );
         $lispString = implode('-', $lispParts);
 
         return $lispString;
