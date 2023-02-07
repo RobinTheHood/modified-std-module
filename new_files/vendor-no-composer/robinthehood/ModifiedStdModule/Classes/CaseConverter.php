@@ -2,6 +2,8 @@
 
 namespace RobinTheHood\ModifiedStdModule\Classes;
 
+use RobinTheHood\ModifiedStdModule\Classes\CaseConverter;
+
 class CaseConverter
 {
     /**
