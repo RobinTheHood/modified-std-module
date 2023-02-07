@@ -17,7 +17,7 @@ class CaseConverter
         $camelParts = array_map(
             function (string $camelPart) {
                 $camelPart = strtolower($camelPart);
-                $camelPart = ucfirst($camelPart);
+                $camelPart = lcfirst($camelPart);
 
                 return $camelPart;
             },
