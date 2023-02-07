@@ -146,11 +146,12 @@ class StdModule
         return $this->modulePrefix;
     }
 
-    public function getConfig($name, $default = '')
+    public function getConfig($name, $default = false): mixed
     {
         $constantName = $this->getModulePrefix() . '_' . $name;
+        $configurationValue = defined($constantName) ? constant($constantName) : $default;
 
-        return defined($constantName) ? constant($constantName) : $default;
+        return $configurationValue;
     }
 
     public function getVersion()
