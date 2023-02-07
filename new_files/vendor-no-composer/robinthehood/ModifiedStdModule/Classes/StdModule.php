@@ -280,15 +280,6 @@ class StdModule
             )
         );
 
-        $remove_backup_query = xtc_db_query(
-            sprintf(
-                /** TRANSLATORS: %1$s: Database table "configuration". %2$s: Value for "configuration_key". */
-                'DELETE FROM `%1$s` WHERE `configuration_key` = "%2$s"',
-                defined('TABLE_MODULE_BACKUP') ? TABLE_MODULE_BACKUP : 'module_backup',
-                $key
-            )
-        );
-
         $success = false !== $remove_key_query;
 
         return $success;
