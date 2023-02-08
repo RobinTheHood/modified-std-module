@@ -269,6 +269,34 @@ class StdModule
         xtc_db_query("INSERT INTO `" . TABLE_CONFIGURATION . "` (`configuration_key`, `configuration_value`, `configuration_group_id`, `sort_order`, `set_function`, `use_function`, `date_added`) VALUES ('$key', '$value', '$groupId', '$sortOrder', '$setFunction', '$useFunction', NOW())");
     }
 
+    private function buildFunctionString($function): string
+    {
+        if (!$function) {
+            return '';
+        }
+
+        if (is_array($function)) {
+            if (array_key_exists('params', $function)) {
+                if (is_array($function['params'])) {
+                    $params = implode(', ', $function['params']);
+                } else {
+                    $params = $function['params'];
+                }
+                $functionString = $function['name'] . '(' . $params . ',';
+            } else {
+                $functionString = $function['name'];
+            }
+        }
+
+        $lastChar = substr($functionString, -1);
+        if ($lastChar !== '(' &&  $lastChar !== ',') {
+            $functionString .= '(';
+        }
+
+        $functionString = str_replace("'", "\\'", $functionString);
+        return $functionString;
+    }
+
     public function removeConfiguration(string $key): bool
     {
         $key              = $this->getModulePrefix() . '_' . $key;
