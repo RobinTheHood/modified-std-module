@@ -299,7 +299,7 @@ class StdModule
 
     public function removeConfiguration(string $key): bool
     {
-        $key              = $this->getModulePrefix() . '_' . $key;
+        $key = $this->getModulePrefix() . '_' . $key;
         $remove_key_query = xtc_db_query(
             sprintf(
                 /** TRANSLATORS: %1$s: Database table "configuration". %2$s: Value for "configuration_key". */
