@@ -264,7 +264,7 @@ class StdModule
             $setFunction = "xtc_cfg_pull_down_order_statuses(";
         }
 
-        $setFunction = str_replace("'", "\\'", $setFunction);
+        $setFunction = $this->buildFunctionString($setFunction);
 
         xtc_db_query("INSERT INTO `" . TABLE_CONFIGURATION . "` (`configuration_key`, `configuration_value`, `configuration_group_id`, `sort_order`, `set_function`, `use_function`, `date_added`) VALUES ('$key', '$value', '$groupId', '$sortOrder', '$setFunction', '$useFunction', NOW())");
     }
