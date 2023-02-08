@@ -250,7 +250,6 @@ class StdModule
     {
         // $arrayAsString = "['" . implode("','", $values) .  "']";
         // $setFunction = 'xtc_cfg_select_option(' . $arrayAsString . ',';
-
         $setFunction = [
             'name' => 'xtc_cfg_select_option',
             'params' => "['" . implode("','", $values) .  "']"
@@ -274,16 +273,22 @@ class StdModule
     {
         $key = $this->getModulePrefix() . '_' . $key;
 
+        // TODO: remove this if and else block. Or mark as depricated - start
         if ($setFunction == 'select') {
-            $setFunction = "xtc_cfg_select_option(array('true', 'false'),";
+            $setFunction = [
+                'name' => 'xtc_cfg_select_option',
+                'params' => "array('true', 'false')"
+            ];
         } elseif ($setFunction == 'textArea') {
-            $setFunction = "xtc_cfg_textarea(";
+            $setFunction = "xtc_cfg_textarea";
         } elseif ($setFunction == 'orderStatus') {
-            $setFunction = "xtc_cfg_pull_down_order_statuses(";
+            $setFunction = "xtc_cfg_pull_down_order_statuses";
         }
+        // TODO: remove this if and else block. Or mark as depricated - end
 
         $setFunction = $this->buildFunctionString($setFunction);
 
+        // TODO: create something like a new private dbInsertArray() method
         xtc_db_query("INSERT INTO `" . TABLE_CONFIGURATION . "` (`configuration_key`, `configuration_value`, `configuration_group_id`, `sort_order`, `set_function`, `use_function`, `date_added`) VALUES ('$key', '$value', '$groupId', '$sortOrder', '$setFunction', '$useFunction', NOW())");
     }
 
