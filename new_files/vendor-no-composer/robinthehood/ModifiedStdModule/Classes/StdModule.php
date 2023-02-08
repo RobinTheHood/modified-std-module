@@ -226,29 +226,47 @@ class StdModule
 
     public function addConfigurationSelect($key, $value, $groupId, $sortOrder)
     {
-        $this->addConfiguration($key, $value, $groupId, $sortOrder, 'select');
+        $setFunction = [
+            'name' => 'xtc_cfg_select_option',
+            'params' => "array('true', 'false')"
+        ];
+        $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
     public function addConfigurationTextArea($key, $value, $groupId, $sortOrder)
     {
-        $this->addConfiguration($key, $value, $groupId, $sortOrder, 'textArea');
+        $setFunction = 'xtc_cfg_textarea';
+        $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
     public function addConfigurationOrderStatus($key, $value, $groupId, $sortOrder)
     {
-        $this->addConfiguration($key, $value, $groupId, $sortOrder, 'orderStatus', 'xtc_get_order_status_name');
+        $setFunction = 'xtc_cfg_pull_down_order_statuses';
+        $useFunction = 'xtc_get_order_status_name';
+        $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction, $useFunction);
     }
 
     public function addConfigurationDropDown($key, $value, $groupId, $sortOrder, $values)
     {
-        $arrayAsString = "['" . implode("','", $values) .  "']";
-        $setFunction = 'xtc_cfg_select_option(' . $arrayAsString . ',';
+        // $arrayAsString = "['" . implode("','", $values) .  "']";
+        // $setFunction = 'xtc_cfg_select_option(' . $arrayAsString . ',';
+
+        $setFunction = [
+            'name' => 'xtc_cfg_select_option',
+            'params' => "['" . implode("','", $values) .  "']"
+        ];
+
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
     public function addConfigurationDropDownByStaticFunction($key, $value, $groupId, $sortOrder, $staticCallFunctionName)
     {
-        $setFunction = 'xtc_cfg_select_option(' . get_class($this) . '::' . $staticCallFunctionName . '(),';
+        // $setFunction = 'xtc_cfg_select_option(' . get_class($this) . '::' . $staticCallFunctionName . '(),';
+        $callFunction = get_class($this) . '::' . $staticCallFunctionName;
+        $setFunction = [
+            'name' => 'xtc_cfg_select_option',
+            'params' => $callFunction . '()';
+        ];
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
