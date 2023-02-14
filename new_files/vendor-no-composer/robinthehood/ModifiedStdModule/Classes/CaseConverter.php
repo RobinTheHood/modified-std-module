@@ -24,6 +24,7 @@ class CaseConverter
             $screamingParts
         );
         $camelString = implode('', $camelParts);
+        $camelString = lcfirst($camelString);
 
         return $camelString;
     }
