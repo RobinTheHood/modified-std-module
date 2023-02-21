@@ -146,7 +146,7 @@ class StdModule
         return $this->modulePrefix;
     }
 
-    public function getConfig($name, $default = false)
+    public function getConfig($name, $default = false): string
     {
         $constantName = $this->getModulePrefix() . '_' . $name;
         $configurationValue = defined($constantName) ? constant($constantName) : $default;
