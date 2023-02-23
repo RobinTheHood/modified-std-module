@@ -341,11 +341,11 @@ class StdModule
             $this->invokeAction();
         }
 
-        if ($_GET['action']) {
+        if (isset($_GET['action']) && $_GET['action']) {
             return false; // do not check for update
         }
 
-        if ($_GET['moduleaction']) {
+        if (isset($_GET['moduleaction']) && $_GET['moduleaction']) {
             return false; // do not check for update
         }
 
