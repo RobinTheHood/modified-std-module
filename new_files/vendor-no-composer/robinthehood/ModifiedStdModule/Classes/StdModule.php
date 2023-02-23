@@ -324,8 +324,7 @@ class StdModule
     public function checkForUpdate($showUpdateButton = false): bool
     {
         /** Abort if the user is not an admin */
-        // TODO: extract to own private method
-        if (!isset($_SESSION['customers_status']['customers_status_id']) || '0' !== $_SESSION['customers_status']['customers_status_id']) {
+        if (!$this->isAdmin()) {
             return false;
         }
 
@@ -479,5 +478,14 @@ class StdModule
         return '
             <a class="button btnbox" style="text-align:center;" onclick="this.blur();" href="' . $url . '">' . $buttonName . '</a>
         ';
+    }
+
+    private function isAdmin(): bool
+    {
+        $customerStatusId = $_SESSION['customers_status']['customers_status_id'] ?? '';
+        if ($customerStatusId !== '0') {
+            return false;
+        }
+        return true;
     }
 }
