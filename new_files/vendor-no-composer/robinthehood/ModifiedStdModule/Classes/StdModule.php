@@ -337,15 +337,15 @@ class StdModule
             return false; // do not check for update
         }
 
-        if (isset($_GET['moduleaction'])) {
-            $this->invokeAction();
-        }
+        $this->invokeAction();
 
-        if ($_GET['action']) {
+        $action = $_GET['action'] ?? '';
+        if ($action) {
             return false; // do not check for update
         }
 
-        if ($_GET['moduleaction']) {
+        $moduleAction = $_GET['moduleaction'] ?? '';
+        if ($moduleAction) {
             return false; // do not check for update
         }
 
@@ -444,11 +444,12 @@ class StdModule
 
     private function invokeAction()
     {
-        if ($_GET['module'] != $this->code) {
+        $module = $_GET['module'] ?? '';
+        if ($module != $this->code) {
             return;
         }
 
-        $functionName = $_GET['moduleaction'];
+        $functionName = $_GET['moduleaction'] ?? '';
         $functionName = 'invoke' . ucfirst($functionName);
 
         if (!method_exists($this, $functionName)) {
