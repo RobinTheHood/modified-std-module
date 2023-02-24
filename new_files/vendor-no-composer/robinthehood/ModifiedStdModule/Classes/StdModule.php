@@ -307,6 +307,15 @@ class StdModule
         xtc_db_query("ALTER TABLE `" . TABLE_ADMIN_ACCESS . "` ADD `$key` INT(1) NOT NULL DEFAULT 0");
         xtc_db_query("UPDATE `" . TABLE_ADMIN_ACCESS . "` SET `$key` = 1 WHERE `customers_id` = 1");
         xtc_db_query("UPDATE `" . TABLE_ADMIN_ACCESS . "` SET `$key` = 1 WHERE `customers_id`='groups'");
+
+        /** Set access for admin who doesn't have an ID of 1 */
+        if (isset($_SESSION['customer_id']) && '1' !== $_SESSION['customer_id']) {
+            $accessExistsQuery = xtc_db_query("SELECT * FROM " . TABLE_ADMIN_ACCESS . ' WHERE `customers_id` = ' . $_SESSION['customer_id']);
+
+            if (xtc_db_num_rows($accessExistsQuery) >= 1) {
+                xtc_db_query("UPDATE `" . TABLE_ADMIN_ACCESS . "` SET `$key` = 1 WHERE `customers_id` = " . $_SESSION['customer_id'] );
+            }
+        }
     }
 
     public function deleteAdminAccess($key)
