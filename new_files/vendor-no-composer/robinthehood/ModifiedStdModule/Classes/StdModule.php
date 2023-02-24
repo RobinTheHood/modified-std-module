@@ -168,7 +168,7 @@ class StdModule
     public function setVersion($version)
     {
         $this->tempVersion = $version;
-        $this->deleteConfiguration('VERSION', $version);
+        $this->removeConfiguration('VERSION', $version);
         $this->addConfiguration('VERSION', $version, 6, 1);
     }
 
@@ -212,10 +212,10 @@ class StdModule
 
     public function remove()
     {
-        $this->deleteConfiguration('STATUS');
+        $this->removeConfiguration('STATUS');
 
         if ($this->getVersion()) {
-            $this->deleteConfiguration('VERSION');
+            $this->removeConfiguration('VERSION');
         }
     }
 
