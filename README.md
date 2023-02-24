@@ -191,3 +191,10 @@ We are using:
 We are using:
 - [Semantic Versioning 2.0.0](https://semver.org)
 - [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+
+### Testing
+
+```bash
+composer install
+./vendor/bin/phpunit tests --testdox --colors
+```

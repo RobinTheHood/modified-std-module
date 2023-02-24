@@ -1,2 +1,4 @@
 *.code-workspace
 modulehash.json
+
+/vendor/
