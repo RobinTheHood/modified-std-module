@@ -1,0 +1,17 @@
+{
+    "name": "robin/modified-std-module",
+    "authors": [
+        {
+            "name": "Robin Wieschendorf",
+            "email": "mail@robinwieschendorf.de"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "RobinTheHood\\": "new_files/vendor-no-composer/robinthehood"
+        }
+    }
+}
