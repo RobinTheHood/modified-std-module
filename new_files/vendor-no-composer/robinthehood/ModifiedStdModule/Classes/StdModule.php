@@ -324,8 +324,7 @@ class StdModule
     public function checkForUpdate($showUpdateButton = false): bool
     {
         /** Abort if the user is not an admin */
-        // TODO: extract to own private method
-        if (!isset($_SESSION['customers_status']['customers_status_id']) || '0' !== $_SESSION['customers_status']['customers_status_id']) {
+        if (!$this->isAdmin()) {
             return false;
         }
 
@@ -337,15 +336,15 @@ class StdModule
             return false; // do not check for update
         }
 
-        if (isset($_GET['moduleaction'])) {
-            $this->invokeAction();
-        }
+        $this->invokeAction();
 
-        if ($_GET['action']) {
+        $action = $_GET['action'] ?? '';
+        if ($action) {
             return false; // do not check for update
         }
 
-        if ($_GET['moduleaction']) {
+        $moduleAction = $_GET['moduleaction'] ?? '';
+        if ($moduleAction) {
             return false; // do not check for update
         }
 
@@ -444,11 +443,12 @@ class StdModule
 
     private function invokeAction()
     {
-        if ($_GET['module'] != $this->code) {
+        $module = $_GET['module'] ?? '';
+        if ($module != $this->code) {
             return;
         }
 
-        $functionName = $_GET['moduleaction'];
+        $functionName = $_GET['moduleaction'] ?? '';
         $functionName = 'invoke' . ucfirst($functionName);
 
         if (!method_exists($this, $functionName)) {
@@ -478,5 +478,14 @@ class StdModule
         return '
             <a class="button btnbox" style="text-align:center;" onclick="this.blur();" href="' . $url . '">' . $buttonName . '</a>
         ';
+    }
+
+    private function isAdmin(): bool
+    {
+        $customerStatusId = $_SESSION['customers_status']['customers_status_id'] ?? '';
+        if ($customerStatusId !== '0') {
+            return false;
+        }
+        return true;
     }
 }
