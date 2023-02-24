@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace RobintTheHood\ModifiedStdModule\Tests;
+
 use PHPUnit\Framework\TestCase;
 use RobinTheHood\ModifiedStdModule\Classes\CaseConverter;
 
