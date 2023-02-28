@@ -24,7 +24,7 @@ final class StdModuleTest extends TestCase
         'MODULE_ORDER_TOTAL_MC_MY_FIRST_INACTIVE_MODULE',
     ];
 
-    protected function setUp(): void
+    public static function setUpBeforeClass(): void
     {
         foreach (self::$moduleNamesActive as $moduleName) {
             define($moduleName . '_STATUS', 'true');
