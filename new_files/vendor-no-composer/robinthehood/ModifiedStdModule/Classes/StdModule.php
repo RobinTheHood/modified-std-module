@@ -271,7 +271,7 @@ class StdModule
 
     public function removeConfigurationAll(): bool
     {
-        $module_name          = $this->getModulePrefix();
+        $module_name = $this->getModulePrefix();
         $remove_configuration = xtc_db_query(
             sprintf(
                 /** TRANSLATORS: %1$s: Database table "configuration". %2$s: Value for "configuration_key". */
