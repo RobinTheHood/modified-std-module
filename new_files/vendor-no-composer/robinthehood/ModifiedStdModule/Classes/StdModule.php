@@ -281,9 +281,11 @@ class StdModule
             )
         );
 
-        $success = false !== $remove_configuration;
+        if (false === $remove_configuration) {
+            return false;
+        }
 
-        return $success;
+        return true;
     }
 
     public function removeConfiguration(string $key): bool
