@@ -158,6 +158,39 @@ public StdModule::deleteConfiguration(string $key): void
 $this->deleteConfiguration('STATUS');
 ```
 
+### Adding an action and defining a method in a module class
+
+**Note:** Currently this only works for System and Export modules.
+
+In the overview of the modules in the admin area, you can add additional buttons to the right under the description of your module and an action that should be carried out when you click on the button.
+
+1. Open the file that contains the class where you want to add the module class action. For example: `...modules/system/mc_my_module.php`
+
+2. In the constructor of the class, add the following code to register the action:
+
+    ```php
+    public __construct() {
+       ...
+       $this->addAction('myMethod', 'My Button');
+       ...
+    }
+    ```
+
+    This line of code registers an action named `myMethod` with the label 'My Button'.
+
+3. Inside the module class, create a method named `invokeMyMethod` with the following code:
+
+    ```php
+    public function invokeMyMethod()
+    {
+        ...
+    }
+    ```
+
+    This method will be called when the action `myMethod` is triggered.
+
+That's it! You have now added an action and defined the corresponding method in your module class. Make sure to fill in the necessary code within the `invokeMyMethod` method to achieve the desired functionality.
+
 ### Easy access with class Configuration
 In order to use configuration values you can use them as usual:
 
