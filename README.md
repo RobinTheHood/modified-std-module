@@ -75,7 +75,7 @@ You can use the following methods in the `public StdModule::install()` method.
 ```php
 // Example
 public __construct() {
-    $this->init('MODULE_MC_MY_FIRST_MODULE');
+    $parent::__construct('MODULE_MC_MY_FIRST_MODULE');
     $this->addKey('USER_NAME');
 }
 
