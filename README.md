@@ -169,7 +169,7 @@ In the overview of the modules in the admin area, you can add additional buttons
 2. In the constructor of the class, add the following code to register the action:
 
     ```php
-    public __construct() {
+    public function __construct() {
        ...
        $this->addAction('myMethod', 'My Button');
        ...
