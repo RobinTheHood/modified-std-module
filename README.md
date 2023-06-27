@@ -1,7 +1,7 @@
 # Library Module: Modified Standard Module
 [![dicord](https://img.shields.io/discord/727190419158597683)](https://discord.gg/9NqwJqP)
 
-(DE): Programmcodeerweiterung: Standard Modul für Modified 
+(DE): Programmcodeerweiterung: Standard Modul für Modified
 
 With this library you need less code to write system and class extensions for modified. If you need help visit the [Discord Server](https://discord.gg/9NqwJqP) for MMLC.
 
@@ -23,7 +23,8 @@ This is a example of how to use the StdModule class vor a System Module.
 defined('_VALID_XTC') or die('Direct Access to this location is not allowed.');
 
 use RobinTheHood\ModifiedStdModule\Classes\StdModule;
-require_once DIR_FS_DOCUMENT_ROOT . '/vendor-no-composer/autoload.php';
+
+require_once DIR_FS_DOCUMENT_ROOT . '/includes/extra/functions/composer_autoload.php';
 
 class mc_my_first_module extends StdModule
 {
