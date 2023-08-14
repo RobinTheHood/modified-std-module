@@ -252,7 +252,7 @@ class StdModule
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
-    public function addConfiguration($key, $value, $groupId, $sortOrder, $setFunction = '', $useFunction = '')
+    public function addConfiguration(string $key, string $value = '', int $groupId = 6, int $sortOrder = 1, string $setFunction = '', string $useFunction = '')
     {
         $key = $this->getModulePrefix() . '_' . $key;
 
