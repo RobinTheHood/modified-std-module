@@ -33,7 +33,8 @@
 
     "autoload": {
         "psr-4": {
-            "RobinTheHood\\": "/vendor-no-composer/robinthehood"
+            "RobinTheHood\\": "/vendor-no-composer/robinthehood",
+            "RobinTheHood\\ModifiedStdModule\\": "/src-mmlc/"
         }
     }
 }
