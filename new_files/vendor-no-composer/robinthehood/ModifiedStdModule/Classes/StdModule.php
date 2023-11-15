@@ -332,6 +332,10 @@ class StdModule
      */
     public function checkForUpdate($showUpdateButton = false): bool
     {
+        if (!$this->isOnAdminModulesPage()) {
+            return false;
+        }
+
         /** Abort if the user is not an admin */
         if (!$this->isAdmin()) {
             return false;
@@ -398,6 +402,38 @@ class StdModule
         }
 
         return true;
+    }
+
+    private function isOnPage($targetPage)
+    {
+        $currentPage = $_SERVER['PHP_SELF'];
+
+        if (substr($currentPage, -strlen($targetPage)) === $targetPage) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function isOnAdminModulesPage()
+    {
+        if (!defined('RUN_MODE_ADMIN')) {
+            return false;
+        }
+
+        if (!RUN_MODE_ADMIN) {
+            return false;
+        }
+
+        if ($this->isOnPage('modules.php')) {
+            return true;
+        }
+
+        if ($this->isOnPage('module_export.php')) {
+            return true;
+        }
+
+        return false;
     }
 
     public function invokeUpdate()
