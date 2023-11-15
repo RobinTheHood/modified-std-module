@@ -269,6 +269,25 @@ class StdModule
         xtc_db_query("INSERT INTO `" . TABLE_CONFIGURATION . "` (`configuration_key`, `configuration_value`, `configuration_group_id`, `sort_order`, `set_function`, `use_function`, `date_added`) VALUES ('$key', '$value', '$groupId', '$sortOrder', '$setFunction', '$useFunction', NOW())");
     }
 
+    public function removeConfigurationAll(): bool
+    {
+        $module_name = $this->getModulePrefix();
+        $remove_configuration = xtc_db_query(
+            sprintf(
+                /** TRANSLATORS: %1$s: Database table "configuration". %2$s: Value for "configuration_key". */
+                'DELETE FROM `%1$s` WHERE `configuration_key` LIKE "%2$s_%"',
+                TABLE_CONFIGURATION,
+                $module_name
+            )
+        );
+
+        if (false === $remove_configuration) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function removeConfiguration(string $key): bool
     {
         $key              = $this->getModulePrefix() . '_' . $key;
