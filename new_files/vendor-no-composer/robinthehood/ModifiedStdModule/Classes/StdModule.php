@@ -8,6 +8,9 @@ $rthModifiedStdModuleMessages = [];
  * Class StdModule
  *
  * This class provides a standard module structure.
+ *
+ * You can find more informations of module developing for modified at
+ * https://docs.module-loader.de
  */
 class StdModule
 {
@@ -47,26 +50,30 @@ class StdModule
 
 
     /**
+     * Used by modified code.
+     *
      * @var string $code A unique code of the module.
-     *      Used by modified code.
      */
     public $code;
 
     /**
+     * Used by modified code.
+     *
      * @var string $title The title displayed in the backend of the module
-     *      Used by modified code.
      */
     public $title;
 
     /**
+     * Used by modified code.
+     *
      * @var string $title The description displayed in the backend of the module
-     *      Used by modified code.
      */
     public $description;
 
     /**
+     * Used by modified code.
+     *
      * @var bool $enabled Indicates whether the module is enabled.
-     *      Used by modified code.
      */
     public $enabled;
 
@@ -76,22 +83,25 @@ class StdModule
     private $installed;
 
     /**
-     * @var int $sort_order
-     *      The position in the backend at which the module should be displayed in the backend in a list
-     *      with other modules. Used by modified code.
+     * Used by modified code.
+     *
+     * @var int $sort_order The position in the backend at which the module should be displayed in the backend in a list
+     *      with other modules.
      */
     public $sort_order;
 
     /**
+     * Used by StdModule code.
+     *
      * @var string $modulePrefix The prefix of the module. E.g. `MODULE_MY_FIRST_MODULE`
-     *      Used by StdModule code.
      */
     public $modulePrefix;
 
     /**
+     * Used by modified code.
+     *
      * @var string[] $keys An array of configuration key names of the module in uppercase. E.g.
      *      `MODULE_MC_MY_FIRST_MODULE_STATUS`, `MODULE_MC_MY_FIRST_MODULE_SIZE`
-     *      Used by modified code.
      */
     public $keys = [];
 
