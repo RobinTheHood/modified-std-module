@@ -380,14 +380,16 @@ class StdModule
      */
     public function check()
     {
-        if (!isset($this->check)) {
+        if (!isset($this->installed)) {
             $key = $this->getModulePrefix() . '_STATUS';
 
-            $query = xtc_db_query("SELECT configuration_value FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = '$key'");
-            $this->check = xtc_db_num_rows($query);
+            $query = xtc_db_query(
+                "SELECT configuration_value FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = '$key'"
+            );
+            $this->installed = xtc_db_num_rows($query);
         }
 
-        return $this->check;
+        return $this->installed;
     }
 
     /**
