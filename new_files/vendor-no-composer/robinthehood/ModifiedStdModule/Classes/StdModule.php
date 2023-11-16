@@ -362,8 +362,16 @@ class StdModule
 
     public function displaySaveButton()
     {
+        $buttonLink = xtc_href_link(FILENAME_MODULE_EXPORT, 'set=' . $_GET['set'] . '&module=' . $this->code);
+
+        $html = '
+            <br><div align="center">'
+            . xtc_button(BUTTON_SAVE)
+            . xtc_button_link(BUTTON_CANCEL, $buttonLink)
+            . '</div>';
+
         return [
-            'text' => '<br><div align="center">' . xtc_button(BUTTON_SAVE) . xtc_button_link(BUTTON_CANCEL, xtc_href_link(FILENAME_MODULE_EXPORT, 'set=' . $_GET['set'] . '&module=' . $this->code)) . '</div>'
+            'text' => $html
         ];
     }
 
@@ -438,8 +446,13 @@ class StdModule
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
-    public function addConfigurationDropDownByStaticFunction($key, $value, $groupId, $sortOrder, $staticCallFunctionName)
-    {
+    public function addConfigurationDropDownByStaticFunction(
+        $key,
+        $value,
+        $groupId,
+        $sortOrder,
+        $staticCallFunctionName
+    ) {
         $setFunction = 'xtc_cfg_select_option(' . get_class($this) . '::' . $staticCallFunctionName . '(),';
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
@@ -458,7 +471,28 @@ class StdModule
 
         $setFunction = str_replace("'", "\\'", $setFunction);
 
-        xtc_db_query("INSERT INTO `" . TABLE_CONFIGURATION . "` (`configuration_key`, `configuration_value`, `configuration_group_id`, `sort_order`, `set_function`, `use_function`, `date_added`) VALUES ('$key', '$value', '$groupId', '$sortOrder', '$setFunction', '$useFunction', NOW())");
+        xtc_db_query(
+            "INSERT INTO `" . TABLE_CONFIGURATION . "`
+            (
+                `configuration_key`,
+                `configuration_value`,
+                `configuration_group_id`,
+                `sort_order`,
+                `set_function`,
+                `use_function`,
+                `date_added`
+            )
+                VALUES
+            (
+                '$key', 
+                '$value', 
+                '$groupId', 
+                '$sortOrder', 
+                '$setFunction', 
+                '$useFunction', 
+                NOW()
+            )"
+        );
     }
 
     public function removeConfigurationAll(): bool
@@ -500,7 +534,9 @@ class StdModule
     public function deleteConfiguration(string $key): bool
     {
         /** E_USER_DEPRECATED does not work */
-        trigger_error('Using the deleteConfiguration method is deprecated. Use removeConfiguration instead.', E_USER_NOTICE);
+        trigger_error(
+            'Using the deleteConfiguration method is deprecated. Use removeConfiguration instead.', E_USER_NOTICE
+        );
 
         return $this->removeConfiguration($key);
     }
@@ -510,7 +546,11 @@ class StdModule
         $oldKey = $this->getModulePrefix() . '_' . $oldKey;
         $newKey = $this->getModulePrefix() . '_' . $newKey;
 
-        xtc_db_query("UPDATE `" . TABLE_CONFIGURATION . "` SET `configuration_key` = '$newKey' WHERE `configuration_key` = '$oldKey'");
+        xtc_db_query(
+            "UPDATE `" . TABLE_CONFIGURATION . "`
+            SET `configuration_key` = '$newKey'
+            WHERE `configuration_key` = '$oldKey'"
+        );
     }
 
     public function setAdminAccess($key)
@@ -521,10 +561,16 @@ class StdModule
 
         /** Set access for admin who doesn't have an ID of 1 */
         if (isset($_SESSION['customer_id']) && '1' !== $_SESSION['customer_id']) {
-            $accessExistsQuery = xtc_db_query("SELECT * FROM " . TABLE_ADMIN_ACCESS . ' WHERE `customers_id` = ' . $_SESSION['customer_id']);
+            $accessExistsQuery = xtc_db_query(
+                "SELECT * FROM " . TABLE_ADMIN_ACCESS . ' WHERE `customers_id` = ' . $_SESSION['customer_id']
+            );
 
             if (xtc_db_num_rows($accessExistsQuery) >= 1) {
-                xtc_db_query("UPDATE `" . TABLE_ADMIN_ACCESS . "` SET `$key` = 1 WHERE `customers_id` = " . $_SESSION['customer_id']);
+                xtc_db_query(
+                    "UPDATE `" . TABLE_ADMIN_ACCESS . "`
+                    SET `$key` = 1
+                    WHERE `customers_id` = " . $_SESSION['customer_id']
+                );
             }
         }
     }
@@ -748,7 +794,9 @@ class StdModule
         );
 
         return '
-            <a class="button btnbox" style="text-align:center;" onclick="this.blur();" href="' . $url . '">' . $buttonName . '</a>
+            <a class="button btnbox" style="text-align:center;" onclick="this.blur();" href="' . $url . '">'
+            . $buttonName
+            . '</a>
         ';
     }
 
