@@ -4,28 +4,118 @@ namespace RobinTheHood\ModifiedStdModule\Classes;
 
 $rthModifiedStdModuleMessages = [];
 
+/**
+ * Class StdModule
+ *
+ * This class provides a standard module structure.
+ */
 class StdModule
 {
+    /**
+     * @var string Current version of the module.
+     *      Used by StdModule code.
+     */
     public const VERSION = '';
+
+
+
+    /**
+     * Constants for update status.
+     */
+
+     /** @var int */
     public const UPDATE_ERROR = -1;
+
+    /** @var int */
     public const UPDATE_NOTHING = -1;
+
+    /** @var int */
     public const UPDATE_SUCCESS = 1;
 
+
+
+    /**
+     * Constants for message types.
+     */
+
+     /** @var int */
     public const MESSAGE_ERROR = -1;
+
+    /** @var int */
     public const MESSAGE_SUCCESS = 1;
 
+
+
+    /**
+     * @var string $code A unique code of the module.
+     *      Used by modified code.
+     */
     public $code;
+
+    /**
+     * @var string $title The title displayed in the backend of the module
+     *      Used by modified code.
+     */
     public $title;
+
+    /**
+     * @var string $title The description displayed in the backend of the module
+     *      Used by modified code.
+     */
     public $description;
+
+    /**
+     * @var bool $enabled Indicates whether the module is enabled.
+     *      Used by modified code.
+     */
     public $enabled;
+
+    /**
+     * @var int $sort_order
+     *      The position in the backend at which the module should be displayed in the backend in a list
+     *      with other modules. Used by modified code.
+     */
     public $sort_order;
 
+    /**
+     * @var string $modulePrefix The prefix of the module. E.g. `MODULE_MY_FIRST_MODULE`
+     *      Used by StdModule code.
+     */
     public $modulePrefix;
+
+    /**
+     * @var string[] $keys An array of configuration key names of the module in uppercase. E.g.
+     *      `MODULE_MC_MY_FIRST_MODULE_STATUS`, `MODULE_MC_MY_FIRST_MODULE_SIZE`
+     *      Used by modified code.
+     */
     public $keys = [];
 
+    /**
+     * @var string $tempVersion A temporary version for module updates.
+     */
     private $tempVersion;
+
+    /**
+     * An array containing information about module actions.
+     *
+     * @var array[] $actions
+     * @example ...
+     * [
+     *     [
+     *         'functionName' => 'update',
+     *         'buttonName' => 'Update'
+     *     ],
+     *     // Additional entries can be added similarly
+     * ]
+     */
     private $actions = [];
 
+    /**
+     * Checks if a module is enabled.
+     *
+     * @param string $module The name of the module. E.g. `MODULE_MC_MY_FIRST_MODULE`
+     * @return bool True if the module is enabled, false otherwise.
+     */
     public static function isEnabled(string $module)
     {
         $statusConstant = $module . '_STATUS';
@@ -37,6 +127,12 @@ class StdModule
         return false;
     }
 
+    /**
+     * Checks if a module is disabled.
+     *
+     * @param string $module The name of the module. E.g. `MODULE_MC_MY_FIRST_MODULE`
+     * @return bool True if the module is disabled, false otherwise.
+     */
     public static function isDisabled(string $module)
     {
         $isDisabled = !self::isEnabled($module);
@@ -44,6 +140,12 @@ class StdModule
         return $isDisabled;
     }
 
+    /**
+     * Constructor for the StdModule class.
+     *
+     * @param string $modulePrefix The prefix of the module. E.g. `MODULE_MC_MY_FIRST_MODULE`
+     * @param string $code The code of the module.
+     */
     public function __construct($modulePrefix = '', $code = '')
     {
         $class = get_class($this);
@@ -68,6 +170,14 @@ class StdModule
         $this->addKey('STATUS');
     }
 
+    /**
+     * Initializes the module.
+     *
+     * @deprecated Deprecated. Use parent::__construct() instead.
+     *
+     * @param string $modulePrefix The prefix of the module. E.g. `MODULE_MC_MY_FIRST_MODULE`
+     * @param string $code The code of the module.
+     */
     public function init($modulePrefix, $code = '')
     {
         self::__construct($modulePrefix, $code);
@@ -76,6 +186,12 @@ class StdModule
         trigger_error('Using the init method is deprecated. Use parent::__construct instead.', E_USER_NOTICE);
     }
 
+    /**
+     * Adds a splash message above the module list in the backend.
+     *
+     * @param string $message The message.
+     * @param int $messageType The message type (MESSAGE_ERROR or MESSAGE_SUCCESS).
+     */
     public function addMessage($message, $messageType = self::MESSAGE_ERROR)
     {
         global $rthModifiedStdModuleMessages;
@@ -100,6 +216,11 @@ class StdModule
         }
     }
 
+    /**
+     * Adds a configuration key to the module.
+     *
+     * @param string $key The key. E.g. `SIZE`, `WEIGHT`, etc.
+     */
     public function addKey($key)
     {
         $fullKeyName = $this->getModulePrefix() . '_' . $key;
@@ -157,9 +278,9 @@ class StdModule
     public function getVersion()
     {
         if (!$this->tempVersion) {
-            // Speichere Version in tempVersion, da Änderungen an der Datenbank Konstante
-            // VERSION erst bei einem reload aktiv werden. setVersion speicher ebenfalls
-            // einen neuen Wert in tempVersion.
+            // Save the version in tempVersion because changes to the database constant
+            // VERSION only take effect after a reload. setVersion also always saves
+            // a new value in tempVersion.
             $this->tempVersion = $this->getConfig('VERSION');
         }
         return $this->tempVersion;
@@ -172,10 +293,16 @@ class StdModule
         $this->addConfiguration('VERSION', $version, 6, 1);
     }
 
+    /**
+     * Used by modified code.
+     */
     public function process($file)
     {
     }
 
+    /**
+     * Used by modified code.
+     */
     public function display()
     {
     }
@@ -187,6 +314,9 @@ class StdModule
         ];
     }
 
+    /**
+     * Used by modified code.
+     */
     public function check()
     {
         if (!isset($this->check)) {
@@ -199,6 +329,9 @@ class StdModule
         return $this->check;
     }
 
+    /**
+     * Used by modified code.
+     */
     public function install()
     {
         $this->addConfigurationSelect('STATUS', 'true', 6, 1);
@@ -210,6 +343,9 @@ class StdModule
         }
     }
 
+    /**
+     * Used by modified code.
+     */
     public function remove()
     {
         $this->removeConfiguration('STATUS');
@@ -219,6 +355,9 @@ class StdModule
         }
     }
 
+    /**
+     * Used by modified code.
+     */
     public function keys()
     {
         return $this->keys;
@@ -477,11 +616,27 @@ class StdModule
         );
     }
 
+    /**
+     * Can be overridden by the module class to define tasks for updating the module. For more information,
+     * refer to the documentation: https://module-loader.de/docs/module_update_with_std_module.php
+     *
+     * @return int The update status. Possible values are `UPDATE_NOTHING`, `UPDATE_SUCCESS`, or `UPDATE_ERROR`.
+     */
     protected function updateSteps()
     {
         return self::UPDATE_NOTHING;
     }
 
+    /**
+     * Adds a separate button (next to Install, Uninstall, etc.) on the right side of the module overview in the
+     * backend.
+     *
+     * In order for the button to be able to call the function, a method with the prefix `invoke` must be added to the
+     * module class. E.g If the `functionName` is `calcSize` the Module needs a method named `invokeCalcSize()`.
+     *
+     * @param string $functionName The name of the function to invoke.
+     * @param string $buttonName The name displayed on the action button.
+     */
     public function addAction($functionName, $buttonName = '')
     {
         if (!$this->enabled) {
@@ -544,6 +699,11 @@ class StdModule
         ';
     }
 
+     /**
+     * Checks whether the user is an admin.
+     *
+     * @return bool True if the user is an admin, false otherwise.
+     */
     private function isAdmin(): bool
     {
         $customerStatusId = $_SESSION['customers_status']['customers_status_id'] ?? '';
