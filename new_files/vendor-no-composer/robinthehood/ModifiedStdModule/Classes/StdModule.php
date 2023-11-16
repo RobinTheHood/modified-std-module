@@ -71,6 +71,11 @@ class StdModule
     public $enabled;
 
     /**
+     * @var bool $installed Indicates whether the module is installed or not.
+     */
+    private $installed;
+
+    /**
      * @var int $sort_order
      *      The position in the backend at which the module should be displayed in the backend in a list
      *      with other modules. Used by modified code.
@@ -231,6 +236,11 @@ class StdModule
         $this->keys[] = $fullKeyName;
     }
 
+    /**
+     * Gets the title of the module, including the version if available.
+     *
+     * @return string The module title, optionally appended with the version in the format " (vX.X.X)".
+     */
     public function getTitle()
     {
         $version = $this->getVersion();
@@ -241,11 +251,21 @@ class StdModule
         return $title;
     }
 
+    /**
+     * Gets the description from the language file of the module.
+     *
+     * @return string The module description from the language file of the current language.
+     */
     public function getDescription()
     {
         return $this->getConfig('LONG_DESCRIPTION');
     }
 
+    /**
+     * Gets the sort order of the module.
+     *
+     * @return int The sort order value for displaying the module in the backend list.
+     */
     public function getSortOrder()
     {
         $sortOrder = $this->getConfig('SORT_ORDER', 0);
@@ -253,6 +273,11 @@ class StdModule
         return $sortOrder;
     }
 
+    /**
+     * Checks if the module is enabled.
+     *
+     * @return bool True if the module is enabled, false otherwise.
+     */
     public function getEnabled()
     {
         $status = strtolower($this->getConfig('STATUS'));
@@ -262,11 +287,24 @@ class StdModule
         return false;
     }
 
+    /**
+     * Gets the prefix of the module.
+     *
+     * @return string The prefix of the module. E.g., `MODULE_MC_MY_FIRST_MODULE`
+     */
     public function getModulePrefix()
     {
         return $this->modulePrefix;
     }
 
+    /**
+     * Gets the configuration value for a given configuration key.
+     *
+     * @param string $name    The key of the configuration.
+     * @param mixed  $default The default value to return if the configuration key is not defined.
+     *
+     * @return string The configuration value for the specified key, or the default value if the key is not defined.
+     */
     public function getConfig($name, $default = false): string
     {
         $constantName = $this->getModulePrefix() . '_' . $name;
@@ -275,17 +313,32 @@ class StdModule
         return $configurationValue;
     }
 
+    /**
+     * Gets the version of the module.
+     *
+     * If the temporary version (`tempVersion`) is not set, it retrieves the version
+     * from the configuration and saves it in `tempVersion`. This is done because changes
+     * to the database constant `VERSION` only take effect after a reload. The `setVersion`
+     * method also always saves a new value in `tempVersion`.
+     *
+     * @return string The version of the module.
+     */
     public function getVersion()
     {
         if (!$this->tempVersion) {
-            // Save the version in tempVersion because changes to the database constant
-            // VERSION only take effect after a reload. setVersion also always saves
-            // a new value in tempVersion.
             $this->tempVersion = $this->getConfig('VERSION');
         }
         return $this->tempVersion;
     }
 
+    /**
+     * Sets the version of the module.
+     *
+     * It updates the temporary version (`tempVersion`), removes the existing configuration
+     * for 'VERSION', and adds a new configuration entry for 'VERSION' with the provided version.
+     *
+     * @param string $version The new version to set for the module.
+     */
     public function setVersion($version)
     {
         $this->tempVersion = $version;
