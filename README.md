@@ -119,10 +119,10 @@ $this->addConfigurationTextArea('IMPRINT', 'a longer text', 6, 1);
 
 #### Adds a order status select configuration
 ```php
-public StdModule::addConfigurationOrderStatus(string $key, int $value, int $groupId, int $sortOrder): void
+public StdModule::addConfigurationOrderStatus(string $key, string $value, int $groupId, int $sortOrder): void
 
 // Example
-$this->addConfigurationOrderStatus('CHANGE_TO_STATUS', 2, 6, 1);
+$this->addConfigurationOrderStatus('CHANGE_TO_STATUS', '2', 6, 1);
 ```
 
 #### Adds a select with multible options
