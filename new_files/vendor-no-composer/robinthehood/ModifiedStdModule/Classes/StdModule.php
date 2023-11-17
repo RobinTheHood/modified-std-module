@@ -281,7 +281,7 @@ class StdModule
      * until the update status is `UPDATE_NOTHING`. It also updates the module title and displays
      * a success message indicating the completion of the update process.
      *
-     * NOTE: This method is not really private as it can be called from outside via action handling. 
+     * NOTE: This method is not really private as it can be called from outside via action handling.
      */
     private function invokeUpdate(): void
     {
