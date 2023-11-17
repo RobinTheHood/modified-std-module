@@ -80,7 +80,7 @@ class StdModule
     /**
      * @var bool $installed Indicates whether the module is installed or not.
      */
-    private $installed;
+    private bool $installed;
 
     /**
      * Used by modified code. We can not type hint.
@@ -108,7 +108,7 @@ class StdModule
     /**
      * @var string $tempVersion A temporary version for module updates.
      */
-    private $tempVersion;
+    private string $tempVersion;
 
     /**
      * An array containing information about module actions.
@@ -123,7 +123,7 @@ class StdModule
      *     // Additional entries can be added similarly
      * ]
      */
-    private $actions = [];
+    private array $actions = [];
 
     /**
      * Checks if a module is enabled.
@@ -131,7 +131,7 @@ class StdModule
      * @param string $module The name of the module. E.g. `MODULE_MC_MY_FIRST_MODULE`
      * @return bool True if the module is enabled, false otherwise.
      */
-    public static function isEnabled(string $module)
+    public static function isEnabled(string $module): bool
     {
         $statusConstant = $module . '_STATUS';
 
@@ -148,7 +148,7 @@ class StdModule
      * @param string $module The name of the module. E.g. `MODULE_MC_MY_FIRST_MODULE`
      * @return bool True if the module is disabled, false otherwise.
      */
-    public static function isDisabled(string $module)
+    public static function isDisabled(string $module): bool
     {
         $isDisabled = !self::isEnabled($module);
 
@@ -161,7 +161,7 @@ class StdModule
      * @param string $modulePrefix The prefix of the module. E.g. `MODULE_MC_MY_FIRST_MODULE`
      * @param string $code The code of the module.
      */
-    public function __construct($modulePrefix = '', $code = '')
+    public function __construct(string $modulePrefix = '', string $code = '')
     {
         $class = get_class($this);
 
@@ -193,7 +193,7 @@ class StdModule
      * @param string $modulePrefix The prefix of the module. E.g. `MODULE_MC_MY_FIRST_MODULE`
      * @param string $code The code of the module.
      */
-    public function init($modulePrefix, $code = '')
+    public function init(string $modulePrefix, string $code = ''): void
     {
         self::__construct($modulePrefix, $code);
 
@@ -207,7 +207,7 @@ class StdModule
      * @param string $message The message.
      * @param int $messageType The message type (MESSAGE_ERROR or MESSAGE_SUCCESS).
      */
-    public function addMessage($message, $messageType = self::MESSAGE_ERROR)
+    public function addMessage(string $message, int $messageType = self::MESSAGE_ERROR): void
     {
         global $rthModifiedStdModuleMessages;
 
@@ -236,7 +236,7 @@ class StdModule
      *
      * @param string $key The key. E.g. `SIZE`, `WEIGHT`, etc.
      */
-    public function addKey($key)
+    public function addKey(string $key): void
     {
         $fullKeyName = $this->getModulePrefix() . '_' . $key;
         if (in_array($fullKeyName, $this->keys())) {
@@ -251,7 +251,7 @@ class StdModule
      *
      * @return string The module title, optionally appended with the version in the format " (vX.X.X)".
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         $version = $this->getVersion();
         $title = $this->getConfig('TITLE');
@@ -266,7 +266,7 @@ class StdModule
      *
      * @return string The module description from the language file of the current language.
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->getConfig('LONG_DESCRIPTION');
     }
@@ -276,11 +276,11 @@ class StdModule
      *
      * @return int The sort order value for displaying the module in the backend list.
      */
-    public function getSortOrder()
+    public function getSortOrder(): int
     {
         $sortOrder = $this->getConfig('SORT_ORDER', 0);
 
-        return $sortOrder;
+        return (int) $sortOrder;
     }
 
     /**
@@ -288,7 +288,7 @@ class StdModule
      *
      * @return bool True if the module is enabled, false otherwise.
      */
-    public function getEnabled()
+    public function getEnabled(): bool
     {
         $status = strtolower($this->getConfig('STATUS'));
         if ($status == 'true') {
@@ -302,7 +302,7 @@ class StdModule
      *
      * @return string The prefix of the module. E.g., `MODULE_MC_MY_FIRST_MODULE`
      */
-    public function getModulePrefix()
+    public function getModulePrefix(): string
     {
         return $this->modulePrefix;
     }
@@ -315,7 +315,7 @@ class StdModule
      *
      * @return string The configuration value for the specified key, or the default value if the key is not defined.
      */
-    public function getConfig($name, $default = false): string
+    public function getConfig(string $name, $default = false): string
     {
         $constantName = $this->getModulePrefix() . '_' . $name;
         $configurationValue = defined($constantName) ? constant($constantName) : $default;
@@ -333,7 +333,7 @@ class StdModule
      *
      * @return string The version of the module.
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         if (!$this->tempVersion) {
             $this->tempVersion = $this->getConfig('VERSION');
@@ -349,7 +349,7 @@ class StdModule
      *
      * @param string $version The new version to set for the module.
      */
-    public function setVersion($version)
+    public function setVersion(string $version): void
     {
         $this->tempVersion = $version;
         $this->removeConfiguration('VERSION', $version);
@@ -370,7 +370,7 @@ class StdModule
     {
     }
 
-    public function displaySaveButton()
+    public function displaySaveButton(): array
     {
         $buttonLink = xtc_href_link(FILENAME_MODULE_EXPORT, 'set=' . $_GET['set'] . '&module=' . $this->code);
 
@@ -436,41 +436,64 @@ class StdModule
         return $this->keys;
     }
 
-    public function addConfigurationSelect($key, $value, $groupId, $sortOrder)
-    {
+    public function addConfigurationSelect(
+        string $key,
+        string $value,
+        int $groupId,
+        int $sortOrder
+    ): void {
         $this->addConfiguration($key, $value, $groupId, $sortOrder, 'select');
     }
 
-    public function addConfigurationTextArea($key, $value, $groupId, $sortOrder)
-    {
+    public function addConfigurationTextArea(
+        string $key,
+        string $value,
+        int $groupId,
+        int $sortOrder
+    ): void {
         $this->addConfiguration($key, $value, $groupId, $sortOrder, 'textArea');
     }
 
-    public function addConfigurationOrderStatus($key, $value, $groupId, $sortOrder)
-    {
+    public function addConfigurationOrderStatus(
+        string $key,
+        string $value,
+        int $groupId,
+        int $sortOrder
+    ): void {
         $this->addConfiguration($key, $value, $groupId, $sortOrder, 'orderStatus', 'xtc_get_order_status_name');
     }
 
-    public function addConfigurationDropDown($key, $value, $groupId, $sortOrder, $values)
-    {
+    public function addConfigurationDropDown(
+        string $key,
+        string $value,
+        int $groupId,
+        int $sortOrder,
+        array $values
+    ): void {
         $arrayAsString = "['" . implode("','", $values) .  "']";
         $setFunction = 'xtc_cfg_select_option(' . $arrayAsString . ',';
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
     public function addConfigurationDropDownByStaticFunction(
-        $key,
-        $value,
-        $groupId,
-        $sortOrder,
-        $staticCallFunctionName
-    ) {
+        string $key,
+        string $value,
+        int $groupId,
+        int $sortOrder,
+        string $staticCallFunctionName
+    ): void {
         $setFunction = 'xtc_cfg_select_option(' . get_class($this) . '::' . $staticCallFunctionName . '(),';
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
-    public function addConfiguration($key, $value, $groupId, $sortOrder, $setFunction = '', $useFunction = '')
-    {
+    public function addConfiguration(
+        string $key,
+        string $value,
+        int $groupId,
+        int $sortOrder,
+        string $setFunction = '',
+        string $useFunction = ''
+    ): void {
         $key = $this->getModulePrefix() . '_' . $key;
 
         if ($setFunction == 'select') {
@@ -553,7 +576,7 @@ class StdModule
         return $this->removeConfiguration($key);
     }
 
-    public function renameConfiguration($oldKey, $newKey)
+    public function renameConfiguration(string $oldKey, string $newKey): void
     {
         $oldKey = $this->getModulePrefix() . '_' . $oldKey;
         $newKey = $this->getModulePrefix() . '_' . $newKey;
@@ -565,7 +588,7 @@ class StdModule
         );
     }
 
-    public function setAdminAccess($key)
+    public function setAdminAccess(string $key): void
     {
         xtc_db_query("ALTER TABLE `" . TABLE_ADMIN_ACCESS . "` ADD `$key` INT(1) NOT NULL DEFAULT 0");
         xtc_db_query("UPDATE `" . TABLE_ADMIN_ACCESS . "` SET `$key` = 1 WHERE `customers_id` = 1");
@@ -587,7 +610,7 @@ class StdModule
         }
     }
 
-    public function deleteAdminAccess($key)
+    public function deleteAdminAccess($key): void
     {
         xtc_db_query("ALTER TABLE " . TABLE_ADMIN_ACCESS . " DROP $key");
     }
@@ -599,7 +622,7 @@ class StdModule
      *
      * @return bool
      */
-    public function checkForUpdate($showUpdateButton = false): bool
+    public function checkForUpdate(bool $showUpdateButton = false): bool
     {
         if (!$this->isOnAdminModulesPage()) {
             return false;
@@ -673,7 +696,7 @@ class StdModule
         return true;
     }
 
-    private function isOnPage($targetPage)
+    private function isOnPage(string $targetPage): bool
     {
         $currentPage = $_SERVER['PHP_SELF'];
 
@@ -684,7 +707,7 @@ class StdModule
         return false;
     }
 
-    private function isOnAdminModulesPage()
+    private function isOnAdminModulesPage(): bool
     {
         if (!defined('RUN_MODE_ADMIN')) {
             return false;
@@ -705,7 +728,7 @@ class StdModule
         return false;
     }
 
-    public function invokeUpdate()
+    public function invokeUpdate(): void
     {
         $status = '';
         while ($status != self::UPDATE_NOTHING) {
@@ -751,7 +774,7 @@ class StdModule
      * @param string $functionName The name of the function to invoke.
      * @param string $buttonName The name displayed on the action button.
      */
-    public function addAction($functionName, $buttonName = '')
+    public function addAction(string $functionName, string $buttonName = ''): void
     {
         if (!$this->enabled) {
             return;
@@ -774,7 +797,7 @@ class StdModule
         $this->invokeAction();
     }
 
-    private function invokeAction()
+    private function invokeAction(): void
     {
         $module = $_GET['module'] ?? '';
         if ($module != $this->code) {
@@ -791,7 +814,7 @@ class StdModule
         $this->$functionName();
     }
 
-    private function renderButton($functionName, $buttonName)
+    private function renderButton(string $functionName, string $buttonName): string
     {
         if (!isset($_SERVER['SCRIPT_NAME'], $_GET['set'])) {
             return '';
