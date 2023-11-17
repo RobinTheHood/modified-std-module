@@ -386,7 +386,8 @@ class StdModule
      */
     protected function getVersion(): string
     {
-        if (!$this->tempVersion) {
+        $tempVersion = $this->tempVersion ?? '';
+        if (!$tempVersion) {
             $this->tempVersion = $this->getConfig('VERSION');
         }
         return $this->tempVersion;
