@@ -6,7 +6,7 @@
 With this library you need less code to write system and class extensions for modified. If you need help visit the [Discord Server](https://discord.gg/9NqwJqP) for MMLC.
 
 ## Requirements
-- PHP 7.0 or above
+- PHP 7.4 or above
 - [MMLC](https://module-loader.de) *(recommended)*
 
 ## Authors

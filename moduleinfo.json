@@ -35,5 +35,13 @@
         "psr-4": {
             "RobinTheHood\\": "/vendor-no-composer/robinthehood"
         }
+    },
+
+    "php": {
+        "version": "^7.4.0 || ^8.0.0"
+    },
+
+    "mmlc": {
+        "version": "^1.21.0"
     }
 }
