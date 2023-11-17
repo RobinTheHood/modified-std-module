@@ -407,6 +407,17 @@ class StdModule
         $this->addConfiguration('VERSION', $version, 6, 1);
     }
 
+    /**
+     * Returns a save button along with cancel button for module configuration.
+     *
+     * This method generates HTML code for a save button and a cancel button.
+     * The save button is linked to the module export file with the appropriate set
+     * and module parameters based on the current GET parameters. The HTML code is
+     * wrapped in a div element with center alignment.
+     *
+     * @return array An associative array containing the generated HTML code.
+     *               The HTML code is stored with the key 'text'.
+     */
     protected function displaySaveButton(): array
     {
         $buttonLink = xtc_href_link(FILENAME_MODULE_EXPORT, 'set=' . $_GET['set'] . '&module=' . $this->code);
@@ -766,6 +777,15 @@ class StdModule
         return (int) $sortOrder;
     }
 
+    /**
+     * Invokes a module action based on the query parameters.
+     *
+     * This method checks if the requested module and module action match the
+     * corresponding properties of the current StdModule instance. If a valid
+     * module action function exists in the class with the "invoke" prefix followed
+     * by the capitalized action name, it is invoked. The function name is constructed
+     * from the 'moduleaction' query parameter.
+     */
     private function invokeAction(): void
     {
         $module = $_GET['module'] ?? '';
@@ -783,6 +803,19 @@ class StdModule
         $this->$functionName();
     }
 
+    /**
+     * Renders an HTML button element for a module action.
+     *
+     * This method generates an HTML button with a link to execute a module action.
+     * The button is styled using the classes 'button' and 'btnbox' and includes an
+     * inline style for centering text. The button triggers a JavaScript blur event
+     * when clicked.
+     *
+     * @param string $functionName The name of the module action function to invoke.
+     * @param string $buttonName The name displayed on the action button.
+     *
+     * @return string Returns the HTML code for the rendered button.
+     */
     private function renderButton(string $functionName, string $buttonName): string
     {
         if (!isset($_SERVER['SCRIPT_NAME'], $_GET['set'])) {
@@ -821,6 +854,17 @@ class StdModule
         return true;
     }
 
+    /**
+     * Checks if the current page matches the specified target page.
+     *
+     * This method compares the current PHP script's filename with the provided target page
+     * to determine if they match, indicating that the code is currently executing on the
+     * specified page.
+     *
+     * @param string $targetPage The target page to check against, e.g., 'modules.php'.
+     *
+     * @return bool Returns true if the current page matches the target page; otherwise, returns false.
+     */
     private function isOnPage(string $targetPage): bool
     {
         $currentPage = $_SERVER['PHP_SELF'];
@@ -832,6 +876,14 @@ class StdModule
         return false;
     }
 
+    /**
+     * Checks if the current page is the admin modules page.
+     *
+     * This method determines whether the script is running in the admin mode,
+     * and if so, checks if the current page corresponds to the admin modules page.
+     *
+     * @return bool Returns true if the current page is the admin modules page; otherwise, returns false.
+     */
     private function isOnAdminModulesPage(): bool
     {
         if (!defined('RUN_MODE_ADMIN')) {
