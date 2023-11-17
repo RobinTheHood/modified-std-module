@@ -78,11 +78,6 @@ class StdModule
     public $enabled;
 
     /**
-     * @var bool $installed Indicates whether the module is installed or not.
-     */
-    private bool $installed;
-
-    /**
      * Used by modified code. We can not type hint.
      *
      * @var int $sort_order The position in the backend at which the module should be displayed in the backend in a list
@@ -91,19 +86,24 @@ class StdModule
     public $sort_order;
 
     /**
-     * Used by StdModule code. We can not type hint.
-     *
-     * @var string $modulePrefix The prefix of the module. E.g. `MODULE_MY_FIRST_MODULE`
-     */
-    public $modulePrefix;
-
-    /**
      * Used by modified code. We can not type hint.
      *
      * @var string[] $keys An array of configuration key names of the module in uppercase. E.g.
      *      `MODULE_MC_MY_FIRST_MODULE_STATUS`, `MODULE_MC_MY_FIRST_MODULE_SIZE`
      */
     public $keys = [];
+
+    /**
+     * @var bool $installed Indicates whether the module is installed or not.
+     */
+    private bool $installed;
+
+    /**
+     * Used by StdModule code. We can not type hint.
+     *
+     * @var string $modulePrefix The prefix of the module. E.g. `MODULE_MY_FIRST_MODULE`
+     */
+    private $modulePrefix;
 
     /**
      * @var string $tempVersion A temporary version for module updates.
@@ -124,6 +124,36 @@ class StdModule
      * ]
      */
     private array $actions = [];
+
+    /**
+     * Constructor for the StdModule class.
+     *
+     * @param string $modulePrefix The prefix of the module. E.g. `MODULE_MC_MY_FIRST_MODULE`
+     * @param string $code The code of the module.
+     */
+    public function __construct(string $modulePrefix = '', string $code = '')
+    {
+        $class = get_class($this);
+
+        if ($modulePrefix) {
+            $this->modulePrefix = $modulePrefix;
+        } else {
+            $this->modulePrefix = 'MODULE_' . strtoupper($class);
+        }
+
+        if ($code) {
+            $this->code = $code;
+        } else {
+            $this->code = $class;
+        }
+
+        $this->title = $this->getTitle();
+        $this->description = $this->getDescription();
+        $this->sort_order = $this->getSortOrder();
+        $this->enabled = $this->getEnabled();
+
+        $this->addKey('STATUS');
+    }
 
     /**
      * Checks if a module is enabled.
@@ -156,33 +186,115 @@ class StdModule
     }
 
     /**
-     * Constructor for the StdModule class.
-     *
-     * @param string $modulePrefix The prefix of the module. E.g. `MODULE_MC_MY_FIRST_MODULE`
-     * @param string $code The code of the module.
+     * Used by modified code. We can not type hint.
      */
-    public function __construct(string $modulePrefix = '', string $code = '')
+    public function check()
     {
-        $class = get_class($this);
+        if (!isset($this->installed)) {
+            $key = $this->getModulePrefix() . '_STATUS';
 
-        if ($modulePrefix) {
-            $this->modulePrefix = $modulePrefix;
-        } else {
-            $this->modulePrefix = 'MODULE_' . strtoupper($class);
+            $query = xtc_db_query(
+                "SELECT configuration_value FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = '$key'"
+            );
+            $this->installed = xtc_db_num_rows($query);
         }
 
-        if ($code) {
-            $this->code = $code;
-        } else {
-            $this->code = $class;
+        return $this->installed;
+    }
+
+    /**
+     * Used by modified code. We can not type hint.
+     */
+    public function install()
+    {
+        $this->addConfigurationSelect('STATUS', 'true', 6, 1);
+
+        $installedVersion = $this->getVersion();
+
+        if (static::VERSION && !$installedVersion) {
+            $this->setVersion(static::VERSION);
+        }
+    }
+
+    /**
+     * Used by modified code. We can not type hint.
+     */
+    public function remove()
+    {
+        $this->removeConfiguration('STATUS');
+
+        if ($this->getVersion()) {
+            $this->removeConfiguration('VERSION');
+        }
+    }
+
+    /**
+     * Used by modified code. We can not type hint.
+     */
+    public function keys()
+    {
+        return $this->keys;
+    }
+
+    /**
+     * Used by modified code. We can not type hint.
+     */
+    public function process($file)
+    {
+    }
+
+    /**
+     * Used by modified code. We can not type hint.
+     */
+    public function display()
+    {
+    }
+
+    /**
+     * Checks if the module is enabled.
+     *
+     * @return bool True if the module is enabled, false otherwise.
+     */
+    public function getEnabled(): bool
+    {
+        $status = strtolower($this->getConfig('STATUS'));
+        if ($status == 'true') {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gets the prefix of the module.
+     *
+     * @return string The prefix of the module. E.g., `MODULE_MC_MY_FIRST_MODULE`
+     */
+    public function getModulePrefix(): string
+    {
+        return $this->modulePrefix;
+    }
+
+    // TODO: Check whether we can set the visibility of the method to private or protected.
+    public function invokeUpdate(): void
+    {
+        $status = '';
+        while ($status != self::UPDATE_NOTHING) {
+            $versionBefore = $this->getVersion();
+            $status = $this->updateSteps();
+            $versionAfter = $this->getVersion();
+
+            if ($versionBefore == $versionAfter) {
+                break;
+            }
         }
 
         $this->title = $this->getTitle();
-        $this->description = $this->getDescription();
-        $this->sort_order = $this->getSortOrder();
-        $this->enabled = $this->getEnabled();
 
-        $this->addKey('STATUS');
+        $this->addMessage(
+            'Update von ' . $this->getConfig('TITLE') .
+            ' auf Version ' . $this->getVersion() . ' erfolgreich.',
+            self::MESSAGE_SUCCESS
+        );
     }
 
     /**
@@ -247,67 +359,6 @@ class StdModule
     }
 
     /**
-     * Gets the title of the module, including the version if available.
-     *
-     * @return string The module title, optionally appended with the version in the format " (vX.X.X)".
-     */
-    private function getTitle(): string
-    {
-        $version = $this->getVersion();
-        $title = $this->getConfig('TITLE');
-        if ($version) {
-            return $title . ' (v' . $version . ')';
-        }
-        return $title;
-    }
-
-    /**
-     * Gets the description from the language file of the module.
-     *
-     * @return string The module description from the language file of the current language.
-     */
-    private function getDescription(): string
-    {
-        return $this->getConfig('LONG_DESCRIPTION');
-    }
-
-    /**
-     * Gets the sort order of the module.
-     *
-     * @return int The sort order value for displaying the module in the backend list.
-     */
-    private function getSortOrder(): int
-    {
-        $sortOrder = $this->getConfig('SORT_ORDER', 0);
-
-        return (int) $sortOrder;
-    }
-
-    /**
-     * Checks if the module is enabled.
-     *
-     * @return bool True if the module is enabled, false otherwise.
-     */
-    public function getEnabled(): bool
-    {
-        $status = strtolower($this->getConfig('STATUS'));
-        if ($status == 'true') {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Gets the prefix of the module.
-     *
-     * @return string The prefix of the module. E.g., `MODULE_MC_MY_FIRST_MODULE`
-     */
-    public function getModulePrefix(): string
-    {
-        return $this->modulePrefix;
-    }
-
-    /**
      * Gets the configuration value for a given configuration key.
      *
      * @param string $name    The key of the configuration.
@@ -356,20 +407,6 @@ class StdModule
         $this->addConfiguration('VERSION', $version, 6, 1);
     }
 
-    /**
-     * Used by modified code. We can not type hint.
-     */
-    public function process($file)
-    {
-    }
-
-    /**
-     * Used by modified code. We can not type hint.
-     */
-    public function display()
-    {
-    }
-
     protected function displaySaveButton(): array
     {
         $buttonLink = xtc_href_link(FILENAME_MODULE_EXPORT, 'set=' . $_GET['set'] . '&module=' . $this->code);
@@ -385,55 +422,48 @@ class StdModule
         ];
     }
 
-    /**
-     * Used by modified code. We can not type hint.
-     */
-    public function check()
-    {
-        if (!isset($this->installed)) {
-            $key = $this->getModulePrefix() . '_STATUS';
+    protected function addConfiguration(
+        string $key,
+        string $value,
+        int $groupId,
+        int $sortOrder,
+        string $setFunction = '',
+        string $useFunction = ''
+    ): void {
+        $key = $this->getModulePrefix() . '_' . $key;
 
-            $query = xtc_db_query(
-                "SELECT configuration_value FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = '$key'"
-            );
-            $this->installed = xtc_db_num_rows($query);
+        if ($setFunction == 'select') {
+            $setFunction = "xtc_cfg_select_option(array('true', 'false'),";
+        } elseif ($setFunction == 'textArea') {
+            $setFunction = "xtc_cfg_textarea(";
+        } elseif ($setFunction == 'orderStatus') {
+            $setFunction = "xtc_cfg_pull_down_order_statuses(";
         }
 
-        return $this->installed;
-    }
+        $setFunction = str_replace("'", "\\'", $setFunction);
 
-    /**
-     * Used by modified code. We can not type hint.
-     */
-    public function install()
-    {
-        $this->addConfigurationSelect('STATUS', 'true', 6, 1);
-
-        $installedVersion = $this->getVersion();
-
-        if (static::VERSION && !$installedVersion) {
-            $this->setVersion(static::VERSION);
-        }
-    }
-
-    /**
-     * Used by modified code. We can not type hint.
-     */
-    public function remove()
-    {
-        $this->removeConfiguration('STATUS');
-
-        if ($this->getVersion()) {
-            $this->removeConfiguration('VERSION');
-        }
-    }
-
-    /**
-     * Used by modified code. We can not type hint.
-     */
-    public function keys()
-    {
-        return $this->keys;
+        xtc_db_query(
+            "INSERT INTO `" . TABLE_CONFIGURATION . "`
+            (
+                `configuration_key`,
+                `configuration_value`,
+                `configuration_group_id`,
+                `sort_order`,
+                `set_function`,
+                `use_function`,
+                `date_added`
+            )
+                VALUES
+            (
+                '$key', 
+                '$value', 
+                '$groupId', 
+                '$sortOrder', 
+                '$setFunction', 
+                '$useFunction', 
+                NOW()
+            )"
+        );
     }
 
     protected function addConfigurationSelect(
@@ -486,48 +516,21 @@ class StdModule
         $this->addConfiguration($key, $value, $groupId, $sortOrder, $setFunction);
     }
 
-    protected function addConfiguration(
-        string $key,
-        string $value,
-        int $groupId,
-        int $sortOrder,
-        string $setFunction = '',
-        string $useFunction = ''
-    ): void {
-        $key = $this->getModulePrefix() . '_' . $key;
-
-        if ($setFunction == 'select') {
-            $setFunction = "xtc_cfg_select_option(array('true', 'false'),";
-        } elseif ($setFunction == 'textArea') {
-            $setFunction = "xtc_cfg_textarea(";
-        } elseif ($setFunction == 'orderStatus') {
-            $setFunction = "xtc_cfg_pull_down_order_statuses(";
-        }
-
-        $setFunction = str_replace("'", "\\'", $setFunction);
-
-        xtc_db_query(
-            "INSERT INTO `" . TABLE_CONFIGURATION . "`
-            (
-                `configuration_key`,
-                `configuration_value`,
-                `configuration_group_id`,
-                `sort_order`,
-                `set_function`,
-                `use_function`,
-                `date_added`
+    protected function removeConfiguration(string $key): bool
+    {
+        $key              = $this->getModulePrefix() . '_' . $key;
+        $remove_key_query = xtc_db_query(
+            sprintf(
+                /** TRANSLATORS: %1$s: Database table "configuration". %2$s: Value for "configuration_key". */
+                'DELETE FROM `%1$s` WHERE `configuration_key` = "%2$s"',
+                TABLE_CONFIGURATION,
+                $key
             )
-                VALUES
-            (
-                '$key', 
-                '$value', 
-                '$groupId', 
-                '$sortOrder', 
-                '$setFunction', 
-                '$useFunction', 
-                NOW()
-            )"
         );
+
+        $success = false !== $remove_key_query;
+
+        return $success;
     }
 
     protected function removeConfigurationAll(): bool
@@ -547,23 +550,6 @@ class StdModule
         }
 
         return true;
-    }
-
-    protected function removeConfiguration(string $key): bool
-    {
-        $key              = $this->getModulePrefix() . '_' . $key;
-        $remove_key_query = xtc_db_query(
-            sprintf(
-                /** TRANSLATORS: %1$s: Database table "configuration". %2$s: Value for "configuration_key". */
-                'DELETE FROM `%1$s` WHERE `configuration_key` = "%2$s"',
-                TABLE_CONFIGURATION,
-                $key
-            )
-        );
-
-        $success = false !== $remove_key_query;
-
-        return $success;
     }
 
     protected function deleteConfiguration(string $key): bool
@@ -696,61 +682,6 @@ class StdModule
         return true;
     }
 
-    private function isOnPage(string $targetPage): bool
-    {
-        $currentPage = $_SERVER['PHP_SELF'];
-
-        if (substr($currentPage, -strlen($targetPage)) === $targetPage) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function isOnAdminModulesPage(): bool
-    {
-        if (!defined('RUN_MODE_ADMIN')) {
-            return false;
-        }
-
-        if (!RUN_MODE_ADMIN) {
-            return false;
-        }
-
-        if ($this->isOnPage('modules.php')) {
-            return true;
-        }
-
-        if ($this->isOnPage('module_export.php')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    // TODO: Check whether we can set the visibility of the method to private or protected.
-    public function invokeUpdate(): void
-    {
-        $status = '';
-        while ($status != self::UPDATE_NOTHING) {
-            $versionBefore = $this->getVersion();
-            $status = $this->updateSteps();
-            $versionAfter = $this->getVersion();
-
-            if ($versionBefore == $versionAfter) {
-                break;
-            }
-        }
-
-        $this->title = $this->getTitle();
-
-        $this->addMessage(
-            'Update von ' . $this->getConfig('TITLE') .
-            ' auf Version ' . $this->getVersion() . ' erfolgreich.',
-            self::MESSAGE_SUCCESS
-        );
-    }
-
     /**
      * Warning: We can not add type hint return int withod breaking changes, becaus most modules overwrite this
      * method without :int.
@@ -796,6 +727,43 @@ class StdModule
         $this->description = $buttons . $this->getDescription();
 
         $this->invokeAction();
+    }
+
+    /**
+     * Gets the title of the module, including the version if available.
+     *
+     * @return string The module title, optionally appended with the version in the format " (vX.X.X)".
+     */
+    private function getTitle(): string
+    {
+        $version = $this->getVersion();
+        $title = $this->getConfig('TITLE');
+        if ($version) {
+            return $title . ' (v' . $version . ')';
+        }
+        return $title;
+    }
+
+    /**
+     * Gets the description from the language file of the module.
+     *
+     * @return string The module description from the language file of the current language.
+     */
+    private function getDescription(): string
+    {
+        return $this->getConfig('LONG_DESCRIPTION');
+    }
+
+    /**
+     * Gets the sort order of the module.
+     *
+     * @return int The sort order value for displaying the module in the backend list.
+     */
+    private function getSortOrder(): int
+    {
+        $sortOrder = $this->getConfig('SORT_ORDER', 0);
+
+        return (int) $sortOrder;
     }
 
     private function invokeAction(): void
@@ -851,5 +819,37 @@ class StdModule
             return false;
         }
         return true;
+    }
+
+    private function isOnPage(string $targetPage): bool
+    {
+        $currentPage = $_SERVER['PHP_SELF'];
+
+        if (substr($currentPage, -strlen($targetPage)) === $targetPage) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function isOnAdminModulesPage(): bool
+    {
+        if (!defined('RUN_MODE_ADMIN')) {
+            return false;
+        }
+
+        if (!RUN_MODE_ADMIN) {
+            return false;
+        }
+
+        if ($this->isOnPage('modules.php')) {
+            return true;
+        }
+
+        if ($this->isOnPage('module_export.php')) {
+            return true;
+        }
+
+        return false;
     }
 }
