@@ -274,8 +274,16 @@ class StdModule
         return $this->modulePrefix;
     }
 
-    // TODO: Check whether we can set the visibility of the method to private or protected.
-    public function invokeUpdate(): void
+    /**
+     * Invokes the module update process.
+     *
+     * This method initiates the module update by repeatedly calling the `updateSteps` method
+     * until the update status is `UPDATE_NOTHING`. It also updates the module title and displays
+     * a success message indicating the completion of the update process.
+     *
+     * NOTE: This method is not really private as it can be called from outside via action handling. 
+     */
+    private function invokeUpdate(): void
     {
         $status = '';
         while ($status != self::UPDATE_NOTHING) {
@@ -798,6 +806,11 @@ class StdModule
         $functionName = 'invoke' . ucfirst($functionName);
 
         if (!method_exists($this, $functionName)) {
+            return;
+        }
+
+        if ($functionName == 'invokeUpdate') {
+            $this->invokeUpdate();
             return;
         }
 
