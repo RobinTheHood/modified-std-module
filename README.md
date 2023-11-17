@@ -122,7 +122,7 @@ $this->addConfigurationTextArea('IMPRINT', 'a longer text', 6, 1);
 public StdModule::addConfigurationOrderStatus(string $key, int $value, int $groupId, int $sortOrder): void
 
 // Example
-$this->addConfigurationTextArea('CHANGE_TO_STATUS', 2, 6, 1);
+$this->addConfigurationOrderStatus('CHANGE_TO_STATUS', 2, 6, 1);
 ```
 
 #### Adds a select with multible options
