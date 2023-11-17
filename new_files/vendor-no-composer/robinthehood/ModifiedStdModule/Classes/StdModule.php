@@ -50,28 +50,28 @@ class StdModule
 
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      *
      * @var string $code A unique code of the module.
      */
     public $code;
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      *
      * @var string $title The title displayed in the backend of the module
      */
     public $title;
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      *
      * @var string $title The description displayed in the backend of the module
      */
     public $description;
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      *
      * @var bool $enabled Indicates whether the module is enabled.
      */
@@ -83,7 +83,7 @@ class StdModule
     private $installed;
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      *
      * @var int $sort_order The position in the backend at which the module should be displayed in the backend in a list
      *      with other modules.
@@ -91,14 +91,14 @@ class StdModule
     public $sort_order;
 
     /**
-     * Used by StdModule code.
+     * Used by StdModule code. We can not type hint.
      *
      * @var string $modulePrefix The prefix of the module. E.g. `MODULE_MY_FIRST_MODULE`
      */
     public $modulePrefix;
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      *
      * @var string[] $keys An array of configuration key names of the module in uppercase. E.g.
      *      `MODULE_MC_MY_FIRST_MODULE_STATUS`, `MODULE_MC_MY_FIRST_MODULE_SIZE`
@@ -357,14 +357,14 @@ class StdModule
     }
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      */
     public function process($file)
     {
     }
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      */
     public function display()
     {
@@ -386,7 +386,7 @@ class StdModule
     }
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      */
     public function check()
     {
@@ -403,7 +403,7 @@ class StdModule
     }
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      */
     public function install()
     {
@@ -417,7 +417,7 @@ class StdModule
     }
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      */
     public function remove()
     {
@@ -429,7 +429,7 @@ class StdModule
     }
 
     /**
-     * Used by modified code.
+     * Used by modified code. We can not type hint.
      */
     public function keys()
     {
@@ -728,6 +728,9 @@ class StdModule
     }
 
     /**
+     * Warning: We can not add type hint return int withod breaking changes, becaus most modules overwrite this
+     * method without :int.
+     *
      * Can be overridden by the module class to define tasks for updating the module. For more information,
      * refer to the documentation: https://module-loader.de/docs/module_update_with_std_module.php
      *
