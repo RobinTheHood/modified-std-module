@@ -133,20 +133,11 @@ class StdModule
      */
     public function __construct(string $modulePrefix = '', string $code = '')
     {
-        $class = get_class($this);
+        // Set Std Module Attribues
+        $this->modulePrefix = $this->buildModulePrefix($modulePrefix);
 
-        if ($modulePrefix) {
-            $this->modulePrefix = $modulePrefix;
-        } else {
-            $this->modulePrefix = 'MODULE_' . strtoupper($class);
-        }
-
-        if ($code) {
-            $this->code = $code;
-        } else {
-            $this->code = $class;
-        }
-
+        // Set modified Module Attribues
+        $this->code = $this->buildCode($code);
         $this->title = $this->getTitle();
         $this->description = $this->getDescription();
         $this->sort_order = $this->getSortOrder();
@@ -747,6 +738,44 @@ class StdModule
         $this->description = $buttons . $this->getDescription();
 
         $this->invokeAction();
+    }
+
+    /**
+     * Builds and returns the module prefix.
+     *
+     * If a custom module prefix is provided, it is returned directly. Otherwise, the method
+     * generates a default module prefix based on the class name, converting it to uppercase
+     * and prepending 'MODULE_'.
+     *
+     * @param string $modulePrefix The optional custom module prefix. Defaults to an empty string.
+     *
+     * @return string The generated or provided module prefix.
+     */
+    private function buildModulePrefix(string $modulePrefix = ''): string
+    {
+        if ($modulePrefix) {
+            return $modulePrefix;
+        }
+        $class = get_class($this);
+        return $this->modulePrefix = 'MODULE_' . strtoupper($class);
+    }
+
+    /**
+     * Builds and returns the module code.
+     *
+     * If a custom module code is provided, it is returned directly. Otherwise, the method
+     * generates a default module code based on the class name.
+     *
+     * @param string $code The optional custom module code. Defaults to an empty string.
+     *
+     * @return string The generated or provided module code.
+     */
+    private function buildCode(string $code = ''): string
+    {
+        if ($code) {
+            return $code;
+        }
+        return get_class($this);
     }
 
     /**
