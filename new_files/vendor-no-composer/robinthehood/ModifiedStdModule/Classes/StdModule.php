@@ -2,8 +2,6 @@
 
 namespace RobinTheHood\ModifiedStdModule\Classes;
 
-$rthModifiedStdModuleMessages = [];
-
 /**
  * Class StdModule
  *
@@ -124,6 +122,11 @@ class StdModule
      * ]
      */
     private array $actions = [];
+
+    /**
+     * @var string[] Array of splash messages
+     */
+    private static array $messages = [];
 
     /**
      * Constructor for the StdModule class.
@@ -320,11 +323,9 @@ class StdModule
      */
     protected function addMessage(string $message, int $messageType = self::MESSAGE_ERROR): void
     {
-        global $rthModifiedStdModuleMessages;
-
         $hash = md5($message);
 
-        if (!$rthModifiedStdModuleMessages) {
+        if (!self::$messages) {
             echo '<br>';
         }
 
@@ -336,9 +337,9 @@ class StdModule
             $class = 'error_message';
         }
 
-        if (!$rthModifiedStdModuleMessages[$hash]) {
+        if (!self::$messages[$hash]) {
             echo '<div class="' . $class . '">' . $message . '</div>';
-            $rthModifiedStdModuleMessages[$hash][$hash] = $message;
+            self::$messages[$hash] = $message;
         }
     }
 
