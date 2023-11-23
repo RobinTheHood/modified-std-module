@@ -742,6 +742,21 @@ class StdModule
     }
 
     /**
+     * Gets the title of the module, including the version if available.
+     *
+     * @return string The module title, optionally appended with the version in the format " (vX.X.X)".
+     */
+    protected function getTitle(): string
+    {
+        $version = $this->getVersion();
+        $title = $this->getConfig('TITLE');
+        if ($version) {
+            return $title . ' (v' . $version . ')';
+        }
+        return $title;
+    }
+
+    /**
      * Builds and returns the module prefix.
      *
      * If a custom module prefix is provided, it is returned directly. Otherwise, the method
@@ -777,21 +792,6 @@ class StdModule
             return $code;
         }
         return get_class($this);
-    }
-
-    /**
-     * Gets the title of the module, including the version if available.
-     *
-     * @return string The module title, optionally appended with the version in the format " (vX.X.X)".
-     */
-    private function getTitle(): string
-    {
-        $version = $this->getVersion();
-        $title = $this->getConfig('TITLE');
-        if ($version) {
-            return $title . ' (v' . $version . ')';
-        }
-        return $title;
     }
 
     /**
