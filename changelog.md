@@ -20,6 +20,9 @@ Unreleased features and fixes can be viewed on GitHub. To do this, click on [Unr
 - improve README.md
 - adjust visibility of the methods of the StdModule class. Check the majority of all modules so that no braking changes occur.
 
+### Removed
+- modified compatibility 2.0.3.0, 2.0.4.0, 2.0.4.1, 2.0.4.2
+
 ## [0.9.0] - 2023-02-28
 ### Added
 - set admin access for admin with id other than 1 (#24)
