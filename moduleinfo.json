@@ -1,7 +1,7 @@
 {
     "name": "Standard Modul für Modified",
     "archiveName": "robinthehood/modified-std-module",
-    "sourceDir": "new_files",
+    "sourceDir": "src",
     "version": "auto",
 
     "shortDescription": "Standard Modul für Modified",
