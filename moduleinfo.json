@@ -4,8 +4,7 @@
     "sourceDir": "src",
     "version": "auto",
 
-    "shortDescription": "Standard Modul für Modified",
-    "description": "Standard Modul für Modified",
+    "shortDescription": "Vereinfacht die Modulentwicklung für modified durch effizienten Code, Konfigurationsmanagement und Admin-Oberflächenanpassungen.",
 
     "developer": "Robin Wieschendorf",
     "developerWebsite": "https://robinwieschendorf.de",
