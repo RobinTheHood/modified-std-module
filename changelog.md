@@ -4,7 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ## [Unreleased]
 Unreleased features and fixes can be viewed on GitHub. To do this, click on [Unreleased].
 
-## [0.11.0] - 23-11-30
+## [0.11.0] - 2023-11-30
 ### Added
 - modified compatibility `3.0.0`
 - short and long description
