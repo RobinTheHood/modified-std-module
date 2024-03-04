@@ -436,9 +436,9 @@ class StdModule
 
     protected function addConfiguration(
         string $key,
-        string $value,
-        int $groupId,
-        int $sortOrder,
+        string $value = '',
+        int $groupId = 6,
+        int $sortOrder = 1,
         string $setFunction = '',
         string $useFunction = ''
     ): void {
