@@ -387,7 +387,7 @@ class StdModule
      *
      * @return mixed The configuration value for the specified key, or the
      *               default value if the key is not defined. Once the PHP
-     *               requirements go up to >= 8.0, we can return `string|false`
+     *               requirements go up to >= 8.2, we can return `string|false`
      *               instead.
      */
     protected function getConfigFromDb(string $name, $default = false): mixed
