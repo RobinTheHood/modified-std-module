@@ -392,7 +392,7 @@ class StdModule
             return $version;
         }
 
-        $versionConstant = \sprintf('%s_VERSION', $this->modulePrefix);
+        $versionConstant = $this->modulePrefix . '_VERSION';
         $versionQuery = \xtc_db_query(
             \sprintf(
                 'SELECT `configuration_value`
