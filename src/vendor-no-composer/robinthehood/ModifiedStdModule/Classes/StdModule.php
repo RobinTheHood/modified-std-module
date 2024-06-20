@@ -386,11 +386,24 @@ class StdModule
      */
     protected function getVersion(): string
     {
-        $tempVersion = $this->tempVersion ?? '';
-        if (!$tempVersion) {
-            $this->tempVersion = $this->getConfig('VERSION');
+        $version = $this->tempVersion ?? '';
+
+        if ('' === $version) {
+            $versionConstant = \sprintf('%s_VERSION', $this->modulePrefix);
+            $versionQuery = \xtc_db_query(
+                \sprintf(
+                    'SELECT `configuration_value`
+                       FROM `%s`
+                      WHERE `configuration_key` = "%s"',
+                    \TABLE_CONFIGURATION,
+                    $versionConstant
+                )
+            );
+            $versionData = \xtc_db_fetch_array($versionQuery);
+            $version = $versionData['configuration_value'] ?? '';
         }
-        return $this->tempVersion;
+
+        return $version;
     }
 
     /**
