@@ -390,7 +390,7 @@ class StdModule
      *               requirements go up to >= 8.2, we can return `string|false`
      *               instead.
      */
-    protected function getConfigFromDb(string $name, $default = false): mixed
+    protected function getConfigFromDb(string $name, $default = false): string
     {
         $configConstant = $this->modulePrefix . '_' . $name;
         $configQuery = \xtc_db_query(
