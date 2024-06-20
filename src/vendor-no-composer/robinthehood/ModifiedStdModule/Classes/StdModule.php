@@ -376,7 +376,7 @@ class StdModule
 
     /**
      * Gets the configuration value for a given configuration key directly from
-     * the database. This is usually not necesary, unless you have a specific
+     * the database. This is usually not necessary, unless you have a specific
      * reason, please use `getConfig` instead.
      *
      * @param string $name    The key of the configuration.
