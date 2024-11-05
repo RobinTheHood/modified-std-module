@@ -375,6 +375,43 @@ class StdModule
     }
 
     /**
+     * Gets the configuration value for a given configuration key directly from
+     * the database. This is usually not necessary, unless you have a specific
+     * reason, please use `getConfig` instead.
+     *
+     * @param string $name    The key of the configuration.
+     * @param mixed  $default The default value to return if the configuration
+     *                        key is not defined.
+     *
+     * @see getConfig() Gets the configuration.
+     *
+     * @return mixed The configuration value for the specified key, or the
+     *               default value if the key is not defined. Once the PHP
+     *               requirements go up to >= 8.2, we can return `string|false`
+     *               instead.
+     */
+    protected function getConfigFromDb(string $name, $default = false): string
+    {
+        $configConstant = $this->modulePrefix . '_' . $name;
+        $configQuery = \xtc_db_query(
+            \sprintf(
+                'SELECT `configuration_value`
+                   FROM `%s`
+                  WHERE `configuration_key` = "%s"',
+                \TABLE_CONFIGURATION,
+                $configConstant
+            )
+        );
+        $configData = $configQuery instanceof \mysqli_result
+                    ? \xtc_db_fetch_array($configQuery)
+                    : null;
+        $configValue = $configData['configuration_value']
+                     ?? $default;
+
+        return $configValue;
+    }
+
+    /**
      * Gets the version of the module.
      *
      * If the temporary version (`tempVersion`) is not set, it retrieves the version
@@ -386,11 +423,15 @@ class StdModule
      */
     protected function getVersion(): string
     {
-        $tempVersion = $this->tempVersion ?? '';
-        if (!$tempVersion) {
-            $this->tempVersion = $this->getConfig('VERSION');
+        $version = $this->tempVersion ?? '';
+
+        if ('' !== $version) {
+            return $version;
         }
-        return $this->tempVersion;
+
+        $version = $this->getConfigFromDb('VERSION');
+
+        return $version;
     }
 
     /**
