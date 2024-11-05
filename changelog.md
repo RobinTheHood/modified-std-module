@@ -8,6 +8,9 @@ Unreleased features and fixes can be viewed on GitHub. To do this, click on [Unr
 ### Added
 - modified compatibility `3.1.0`, `3.1.1` and `3.1.2`
 
+### Fixed
+- Fixed an issue where the `invokeUpdate` function was being called multible times in certain scenarios, causing errors during database migration. Now, the function is invoked only once as intended to prevent duplicate operations. [#35](https://github.com/RobinTheHood/modified-std-module/pull/35)
+
 ## [0.12.0] - 2024-02-07
 ### Added
 - modified compatibility `3.0.1` and `3.0.2`
