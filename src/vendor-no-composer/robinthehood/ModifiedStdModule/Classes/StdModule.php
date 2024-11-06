@@ -592,7 +592,7 @@ class StdModule
         $remove_configuration = xtc_db_query(
             sprintf(
                 /** TRANSLATORS: %1$s: Database table "configuration". %2$s: Value for "configuration_key". */
-                'DELETE FROM `%1$s` WHERE `configuration_key` LIKE "%2$s_%"',
+                'DELETE FROM `%1$s` WHERE `configuration_key` LIKE "%2$s_%%"',
                 TABLE_CONFIGURATION,
                 $module_name
             )
