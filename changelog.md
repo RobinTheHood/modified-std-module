@@ -4,20 +4,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ## [Unreleased]
 Unreleased features and fixes can be viewed on GitHub. To do this, click on [Unreleased].
 
+## [0.14.0] - 2025-03-26
+### Added
+- Support for modified version `3.1.3`
+- Improved error handling when the autoload file is missing
+
 ## [0.13.0] - 2024-11-05
 ### Added
-- modified compatibility `3.1.0`, `3.1.1` and `3.1.2`
+- Support for modified version `3.1.0`, `3.1.1` and `3.1.2`
 
 ### Fixed
 - Fixed an issue where the `invokeUpdate` function was being called multible times in certain scenarios, causing errors during database migration. Now, the function is invoked only once as intended to prevent duplicate operations. [#35](https://github.com/RobinTheHood/modified-std-module/pull/35)
 
 ## [0.12.0] - 2024-02-07
 ### Added
-- modified compatibility `3.0.1` and `3.0.2`
+- Support for modified version `3.0.1` and `3.0.2`
 
 ## [0.11.0] - 2023-11-30
 ### Added
-- modified compatibility `3.0.0`
+- Support for modified version `3.0.0`
 - short and long description
 
 ### Changed
@@ -41,7 +46,7 @@ Unreleased features and fixes can be viewed on GitHub. To do this, click on [Unr
 - adjust visibility of the methods of the StdModule class. Check the majority of all modules so that no braking changes occur.
 
 ### Removed
-- modified compatibility 2.0.3.0, 2.0.4.0, 2.0.4.1, 2.0.4.2
+- Support for modified version `2.0.3.0`, `2.0.4.0`, `2.0.4.1` and `2.0.4.2`
 
 ## [0.9.0] - 2023-02-28
 ### Added
@@ -88,11 +93,11 @@ Unreleased features and fixes can be viewed on GitHub. To do this, click on [Unr
 
 ## [0.6.3] - 2022-12-27
 ### Added
-- add 2.0.7.0, 2.0.7.1, 2.0.7.2 to modified compatibility
+- Support for modified version `2.0.7.0`, `2.0.7.1` and `2.0.7.2`
 
 ## [0.6.2] - 2021-07-05
 ### Added
-- add 2.0.6.0 to modified compatibility
+- Support for modified version `2.0.6.0`
 
 ### Fixed
 - spelling of method addConfigurationDropDown and addConfigurationDropDownByStaticFunction
@@ -143,7 +148,7 @@ Unreleased features and fixes can be viewed on GitHub. To do this, click on [Unr
 
 ## [0.3.0] - 2020-07-13
 ### Added
-- add modifiedCompatibility 2.0.5.0 and 2.0.5.1
+- Support for modified version `2.0.5.0` and `2.0.5.1`
 
 ## [0.2.0] - 2020-05-19
 ### Added
@@ -153,12 +158,12 @@ Unreleased features and fixes can be viewed on GitHub. To do this, click on [Unr
 ### Changed
 - use auto-version in moduleinfo.json
 
-
 ## [0.0.1] - 2019-01-15
 ### Added
 - initial commit
 
-[Unreleased]: https://github.com/RobinTheHood/modified-std-module/compare/0.13.0...HEAD
+[Unreleased]: https://github.com/RobinTheHood/modified-std-module/compare/0.14.0...HEAD
+[0.14.0]: https://github.com/RobinTheHood/modified-std-module/compare/0.13.0...0.14.0
 [0.13.0]: https://github.com/RobinTheHood/modified-std-module/compare/0.12.0...0.13.0
 [0.12.0]: https://github.com/RobinTheHood/modified-std-module/compare/0.11.0...0.12.0
 [0.11.0]: https://github.com/RobinTheHood/modified-std-module/compare/0.10.0...0.11.0
