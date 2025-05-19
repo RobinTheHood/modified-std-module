@@ -4,6 +4,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ## [Unreleased]
 Unreleased features and fixes can be viewed on GitHub. To do this, click on [Unreleased].
 
+## [0.15.0] - 2025-05-19
+### Added
+- Support for modified version `3.1.4`
+
 ## [0.14.0] - 2025-03-26
 ### Added
 - Support for modified version `3.1.3`
@@ -162,7 +166,8 @@ Unreleased features and fixes can be viewed on GitHub. To do this, click on [Unr
 ### Added
 - initial commit
 
-[Unreleased]: https://github.com/RobinTheHood/modified-std-module/compare/0.14.0...HEAD
+[Unreleased]: https://github.com/RobinTheHood/modified-std-module/compare/0.15.0...HEAD
+[0.15.0]: https://github.com/RobinTheHood/modified-std-module/compare/0.14.0...0.15.0
 [0.14.0]: https://github.com/RobinTheHood/modified-std-module/compare/0.13.0...0.14.0
 [0.13.0]: https://github.com/RobinTheHood/modified-std-module/compare/0.12.0...0.13.0
 [0.12.0]: https://github.com/RobinTheHood/modified-std-module/compare/0.11.0...0.12.0
