@@ -508,12 +508,12 @@ class StdModule
             )
                 VALUES
             (
-                '$key', 
-                '$value', 
-                '$groupId', 
-                '$sortOrder', 
-                '$setFunction', 
-                '$useFunction', 
+                '$key',
+                '$value',
+                '$groupId',
+                '$sortOrder',
+                '$setFunction',
+                '$useFunction',
                 NOW()
             )"
         );
