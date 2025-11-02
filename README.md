@@ -7,7 +7,7 @@ With this library you need less code to write system and class extensions for mo
 
 ## Requirements
 - PHP 7.4 or above
-- modified 2.0.5.0 to 3.1.5
+- modified 2.0.5.0 to 3.1.6
 - [MMLC](https://module-loader.de) *(recommended)*
 
 ## Authors
