@@ -3,7 +3,7 @@
 namespace RobinTheHood\ModifiedStdModule\Classes;
 
 /**
- * Class StdModule
+ * Class StdModule - test
  *
  * This class provides a standard module structure.
  *
