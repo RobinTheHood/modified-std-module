@@ -697,7 +697,7 @@ class StdModule
         }
 
         if ($this->getVersion()) {
-            $from = ' von ' . $this->getVersion();
+            $from = $this->getVersion();
         }
 
         // TODO: extract to own private method
