@@ -329,13 +329,9 @@ class StdModule
             echo '<br>';
         }
 
-        if ($messageType == self::MESSAGE_ERROR) {
-            $class = 'error_message';
-        } elseif ($messageType == self::MESSAGE_SUCCESS) {
-            $class = 'success_message';
-        } else {
-            $class = 'error_message';
-        }
+        $class = self::MESSAGE_SUCCESS === $messageType
+               ? 'success_message'
+               : 'error_message';
 
         if (!self::$messages[$hash]) {
             echo '<div class="' . $class . '">' . $message . '</div>';
