@@ -3,7 +3,7 @@
 namespace RobinTheHood\ModifiedStdModule\Classes;
 
 /**
- * Class StdModule
+ * Class StdModule - test
  *
  * This class provides a standard module structure.
  *
@@ -508,12 +508,12 @@ class StdModule
             )
                 VALUES
             (
-                '$key', 
-                '$value', 
-                '$groupId', 
-                '$sortOrder', 
-                '$setFunction', 
-                '$useFunction', 
+                '$key',
+                '$value',
+                '$groupId',
+                '$sortOrder',
+                '$setFunction',
+                '$useFunction',
                 NOW()
             )"
         );
